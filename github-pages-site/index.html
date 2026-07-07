@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>游戏营销策划工作操作系统</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f3ed;
+      --surface: #fffdf8;
+      --surface-2: #f1f5f0;
+      --ink: #1f2a2e;
+      --muted: #6d7470;
+      --line: #d8d8cf;
+      --green: #2f6f62;
+      --green-soft: #dceae4;
+      --red: #b84b3f;
+      --red-soft: #f2ddd8;
+      --yellow: #bd8b2b;
+      --yellow-soft: #f2e6c9;
+      --blue: #446c9b;
+      --blue-soft: #dbe6f2;
+      --shadow: 0 18px 45px rgba(39, 48, 44, .11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 16px;
+      background: #1f2a2e;
+      color: #f7f2e8;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 8px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--green);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: rgba(247, 242, 232, .7);
+      font-size: 12px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav button {
+      width: 100%;
+      min-height: 40px;
+      border-radius: 8px;
+      color: rgba(247, 242, 232, .78);
+      background: transparent;
+      text-align: left;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav button.active,
+    .nav button:hover {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+    }
+
+    .nav svg,
+    .icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .08);
+      color: rgba(247, 242, 232, .82);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    main {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .title-block h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .title-block p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .search {
+      position: relative;
+      width: min(330px, 40vw);
+    }
+
+    .search input {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 0 12px 0 38px;
+      color: var(--ink);
+      outline: 0;
+    }
+
+    .search svg {
+      position: absolute;
+      left: 12px;
+      top: 11px;
+      color: var(--muted);
+    }
+
+    .primary-btn,
+    .ghost-btn,
+    .small-btn {
+      min-height: 40px;
+      border-radius: 8px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .primary-btn {
+      background: var(--green);
+      color: #fff;
+      padding: 0 14px;
+    }
+
+    .ghost-btn {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      padding: 0 12px;
+    }
+
+    .small-btn {
+      min-height: 34px;
+      padding: 0 10px;
+      background: #eef1ec;
+      color: var(--ink);
+      border: 1px solid transparent;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .panel-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .metric small {
+      display: block;
+      margin-top: 8px;
+      color: var(--green);
+    }
+
+    .flow {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .stage {
+      min-height: 136px;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfaf5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      color: var(--ink);
+    }
+
+    .stage.active {
+      border-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .stage-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .stage-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: #1f2a2e;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stage h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .stage p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      min-height: 24px;
+      border-radius: 6px;
+      padding: 0 8px;
+      font-size: 12px;
+      background: #eef1ec;
+      color: var(--muted);
+    }
+
+    .badge.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .badge.red {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .badge.yellow {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+    }
+
+    .stage-detail {
+      padding: 18px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .detail-box {
+      background: var(--surface-2);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .detail-box h4 {
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      min-height: 28px;
+      border-radius: 7px;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 5px 9px;
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .skill-list,
+    .library-list,
+    .task-list {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .skill,
+    .library,
+    .task {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 12px;
+    }
+
+    .skill {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .skill-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .skill h4,
+    .library h4,
+    .task h4 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .skill p,
+    .library p,
+    .task p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .library {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .library strong {
+      font-size: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      padding: 12px 12px 0;
+      overflow-x: auto;
+    }
+
+    .tab {
+      min-height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      color: var(--green);
+      background: var(--green-soft);
+      border-color: rgba(47, 111, 98, .22);
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .check {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #fff;
+      margin-top: 1px;
+      display: grid;
+      place-items: center;
+      color: transparent;
+    }
+
+    .task.done .check {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .task.done h4,
+    .task.done p {
+      opacity: .62;
+    }
+
+    .matrix {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .matrix-item {
+      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fbfaf5;
+      min-height: 124px;
+    }
+
+    .matrix-item h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .matrix-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .ai-flow {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .ai-step {
+      position: relative;
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfaf5;
+      border: 1px solid var(--line);
+      min-height: 110px;
+    }
+
+    .ai-step h4 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .ai-step p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: #1f2a2e;
+      color: #fff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: .2s ease;
+      font-size: 13px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1180px) {
+      .layout,
+      .stage-detail {
+        grid-template-columns: 1fr;
+      }
+
+      .flow {
+        grid-template-columns: repeat(3, minmax(140px, 1fr));
+      }
+
+      .matrix,
+      .ai-flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      .actions,
+      .search {
+        width: 100%;
+      }
+
+      .metric-grid,
+      .flow,
+      .matrix,
+      .ai-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .title-block h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">GM</div>
+        <div>
+          <h1>GameMarketing OS</h1>
+          <p>游戏营销策划工作操作系统</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="主导航">
+        <button class="active" data-section="overview">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
+          总览
+        </button>
+        <button data-section="process">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/></svg>
+          执行流程
+        </button>
+        <button data-section="skills">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m17 19-5 3-5-3"/><path d="M2 12h20"/></svg>
+          Skill 库
+        </button>
+        <button data-section="library">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          资源库
+        </button>
+        <button data-section="ai">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+          AI 工作流
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <strong>标准流程</strong><br>
+        Brief → 拆解 → 体验 → 调研 → 创意 → 达人 → 脚本 → 执行 → 复盘 → 入库
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div class="title-block">
+          <h2>营销执行流程系统</h2>
+          <p>把游戏营销策划的“方法、素材、经验、AI 效率”放进同一个工作台，从项目 Brief 到复盘入库，每一步都有检查项、产出物和资源入口。</p>
+        </div>
+        <div class="actions">
+          <label class="search" for="globalSearch">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="globalSearch" type="search" placeholder="搜索流程、Skill、资源">
+          </label>
+          <button class="ghost-btn" id="exportBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            导出清单
+          </button>
+          <button class="primary-btn" id="newProjectBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            新建项目
+          </button>
+        </div>
+      </div>
+
+      <section class="metric-grid" id="overview">
+        <div class="metric">
+          <span>当前项目</span>
+          <strong>4</strong>
+          <small>2 个处于执行同步</small>
+        </div>
+        <div class="metric">
+          <span>流程完成度</span>
+          <strong id="progressMetric">62%</strong>
+          <small>脚本预审需跟进</small>
+        </div>
+        <div class="metric">
+          <span>资源沉淀</span>
+          <strong>8</strong>
+          <small>案例/达人/平台持续补充</small>
+        </div>
+        <div class="metric">
+          <span>风险提醒</span>
+          <strong>3</strong>
+          <small>禁区、硬广、客户偏好</small>
+        </div>
+      </section>
+
+      <div class="layout">
+        <section class="panel" id="process">
+          <div class="panel-header">
+            <div>
+              <h3>项目执行主流程</h3>
+              <p>点击阶段查看检查项、产出物和下一步动作。</p>
+            </div>
+            <span class="badge green" id="activeStageBadge">Brief</span>
+          </div>
+          <div class="flow" id="flow"></div>
+          <div class="stage-detail">
+            <div class="detail-box">
+              <h4>检查项</h4>
+              <div class="chip-list" id="checkpoints"></div>
+            </div>
+            <div class="detail-box">
+              <h4>关键产出</h4>
+              <div class="chip-list" id="outputs"></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-stack">
+          <section class="panel" id="tasks">
+            <div class="panel-header">
+              <div>
+                <h3>今日执行清单</h3>
+                <p>围绕当前项目推进，不让卡点散在聊天里。</p>
+              </div>
+              <span class="badge yellow" id="taskCount">5 项</span>
+            </div>
+            <div class="tabs" id="taskTabs">
+              <button class="tab active" data-filter="all">全部</button>
+              <button class="tab" data-filter="strategy">策略</button>
+              <button class="tab" data-filter="creator">达人</button>
+              <button class="tab" data-filter="risk">风险</button>
+            </div>
+            <div class="task-list" id="taskList"></div>
+          </section>
+
+          <section class="panel" id="skills">
+            <div class="panel-header">
+              <div>
+                <h3>Skill 库</h3>
+                <p>把经验变成可复用的动作。</p>
+              </div>
+              <span class="badge green">10 类</span>
+            </div>
+            <div class="skill-list" id="skillList"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="panel" id="library" style="margin-top:18px;">
+        <div class="panel-header">
+          <div>
+            <h3>资源库矩阵</h3>
+            <p>项目案例、达人、创意、客户偏好、踩坑、平台、品类与提示词统一沉淀。</p>
+          </div>
+          <button class="small-btn" id="syncBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-15-6.7L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 15 6.7L21 16"/><path d="M16 16h5v5"/></svg>
+            同步 Obsidian
+          </button>
+        </div>
+        <div class="matrix" id="resourceMatrix"></div>
+      </section>
+
+      <section class="panel" id="ai" style="margin-top:18px;">
+        <div class="panel-header">
+          <div>
+            <h3>AI 增强工作流</h3>
+            <p>ChatGPT 做策略，Codex 做结构化，Typeless 做转写，Obsidian 做沉淀。</p>
+          </div>
+          <span class="badge green">效率层</span>
+        </div>
+        <div class="ai-flow">
+          <div class="ai-step">
+            <span class="badge green">1</span>
+            <h4>ChatGPT 策略</h4>
+            <p>辅助需求拆解、卖点提炼、创意方向、Brief 初稿和风险预判。</p>
+          </div>
+          <div class="ai-step">
+            <span class="badge green">2</span>
+            <h4>Codex 结构化</h4>
+            <p>把流程、表格、检查项和资源目录整理成可执行的系统界面。</p>
+          </div>
+          <div class="ai-step">
+            <span class="badge green">3</span>
+            <h4>Typeless 转写</h4>
+            <p>把会议、客户反馈、达人沟通内容转成可检索的文字资产。</p>
+          </div>
+          <div class="ai-step">
+            <span class="badge green">4</span>
+            <h4>Obsidian 沉淀</h4>
+            <p>将项目案例、踩坑、客户偏好和平台观察持续入库。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const stages = [
+      {
+        name: "Brief",
+        desc: "确认背景、任务、必须项、禁止项和交付结构。",
+        status: "进行中",
+        checkpoints: ["项目", "游戏", "节点", "目标", "平台", "预算", "周期", "禁区"],
+        outputs: ["需求卡片", "对客问题清单", "执行边界"]
+      },
+      {
+        name: "拆解",
+        desc: "把业务目标拆成可执行的策略动作和内容方向。",
+        status: "待补充",
+        checkpoints: ["目标拆解", "平台拆解", "上线时间", "资源缺口"],
+        outputs: ["执行路径", "任务分工", "排期草案"]
+      },
+      {
+        name: "体验",
+        desc: "找出爽点、卖点、可视化点和风险点。",
+        status: "已完成",
+        checkpoints: ["爽点", "卖点", "可视化点", "风险点"],
+        outputs: ["体验笔记", "卖点库", "内容切角"]
+      },
+      {
+        name: "调研",
+        desc: "观察社区情绪、热点、吐槽和梗的传播土壤。",
+        status: "进行中",
+        checkpoints: ["情绪", "热点", "吐槽", "梗", "竞品"],
+        outputs: ["社区观察", "用户语言", "避雷点"]
+      },
+      {
+        name: "创意",
+        desc: "围绕梗化、场景、冲突、角色、视觉和社交做发散。",
+        status: "待评审",
+        checkpoints: ["梗化", "场景", "冲突", "角色", "视觉", "二创"],
+        outputs: ["创意方向", "内容选题", "脚本框架"]
+      },
+      {
+        name: "达人",
+        desc: "从内容、人设、数据、适配度和风险筛选达人。",
+        status: "进行中",
+        checkpoints: ["内容", "人设", "数据", "适配", "风险"],
+        outputs: ["达人名单", "报价口径", "风险标注"]
+      },
+      {
+        name: "脚本",
+        desc: "预审钩子、硬广感、理解准确性、风险和客户偏好。",
+        status: "预警",
+        checkpoints: ["钩子", "硬广", "理解", "风险", "客户偏好"],
+        outputs: ["脚本批注", "修改建议", "确认版本"]
+      },
+      {
+        name: "执行",
+        desc: "同步完成项、进行中、卡点、支持需求和下一步计划。",
+        status: "进行中",
+        checkpoints: ["完成", "进行中", "卡点", "支持", "计划"],
+        outputs: ["执行日报", "问题清单", "客户同步"]
+      },
+      {
+        name: "复盘",
+        desc: "沉淀有效、无效、反馈、踩坑和可复制经验。",
+        status: "待开始",
+        checkpoints: ["有效", "无效", "反馈", "踩坑", "经验"],
+        outputs: ["复盘报告", "经验卡片", "踩坑库"]
+      },
+      {
+        name: "入库",
+        desc: "把项目结果归档到案例、平台、品类、提示词等资源库。",
+        status: "待开始",
+        checkpoints: ["案例", "达人", "创意", "客户", "平台", "品类"],
+        outputs: ["资源标签", "可复用模板", "下次引用入口"]
+      }
+    ];
+
+    const skills = [
+      ["需求拆解", "项目/游戏/节点/目标/平台/预算/周期/上线时间/要求/禁区"],
+      ["游戏体验", "爽点/卖点/可视化点/风险点"],
+      ["社区调研", "情绪/热点/吐槽/梗"],
+      ["创意发散", "梗化/场景/冲突/角色/视觉/社交/二创"],
+      ["达人筛选", "内容/人设/数据/适配/风险"],
+      ["Brief 撰写", "背景/任务/必须/禁止/结构/建议"],
+      ["脚本预审", "钩子/硬广/理解/风险/客户偏好"],
+      ["报价沟通", "口径/成本/对客价/媒介确认"],
+      ["执行同步", "完成/进行中/卡点/支持/计划"],
+      ["复盘", "有效/无效/反馈/踩坑/经验/入库"]
+    ];
+
+    const resources = [
+      ["项目案例库", "沉淀已执行项目的目标、打法、结果和可复用经验。", 18],
+      ["达人资源库", "记录达人内容风格、人设、数据、报价与适配风险。", 126],
+      ["创意案例库", "收集可迁移的梗、场景、冲突、视觉和二创玩法。", 42],
+      ["客户偏好库", "沉淀客户喜欢、反感、禁区和历史反馈。", 9],
+      ["踩坑复盘库", "记录无效动作、风险场景和下次避坑方式。", 15],
+      ["平台观察库", "跟踪平台生态、热点变化、内容形式和流量机制。", 7],
+      ["游戏品类库", "按品类整理玩家动机、卖点语言和传播切角。", 11],
+      ["提示词库", "沉淀策略、拆解、脚本预审、复盘等 AI 提示词。", 24]
+    ];
+
+    const tasks = [
+      { title: "补齐新项目 Brief 禁区", meta: "需求拆解 · 今天 18:00", type: "strategy", done: false },
+      { title: "筛出 20 个高适配达人", meta: "达人筛选 · 明天 12:00", type: "creator", done: false },
+      { title: "检查脚本硬广感和客户偏好", meta: "脚本预审 · 高风险", type: "risk", done: false },
+      { title: "把社区吐槽转成创意切角", meta: "社区调研 · 进行中", type: "strategy", done: true },
+      { title: "更新报价口径与媒介确认", meta: "报价沟通 · 待同步", type: "creator", done: false }
+    ];
+
+    let activeStage = 0;
+    let taskFilter = "all";
+
+    const flowEl = document.querySelector("#flow");
+    const checkpointsEl = document.querySelector("#checkpoints");
+    const outputsEl = document.querySelector("#outputs");
+    const activeStageBadge = document.querySelector("#activeStageBadge");
+    const skillList = document.querySelector("#skillList");
+    const resourceMatrix = document.querySelector("#resourceMatrix");
+    const taskList = document.querySelector("#taskList");
+    const taskCount = document.querySelector("#taskCount");
+    const progressMetric = document.querySelector("#progressMetric");
+    const toast = document.querySelector("#toast");
+
+    function statusClass(status) {
+      if (status === "预警") return "red";
+      if (status === "待评审" || status === "待补充") return "yellow";
+      return "green";
+    }
+
+    function renderFlow() {
+      flowEl.innerHTML = stages.map((stage, index) => `
+        <button class="stage ${index === activeStage ? "active" : ""}" data-index="${index}">
+          <span class="stage-top">
+            <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
+            <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+          </span>
+          <h4>${stage.name}</h4>
+          <p>${stage.desc}</p>
+        </button>
+      `).join("");
+
+      flowEl.querySelectorAll(".stage").forEach(button => {
+        button.addEventListener("click", () => {
+          activeStage = Number(button.dataset.index);
+          renderFlow();
+          renderStageDetail();
+        });
+      });
+    }
+
+    function renderStageDetail() {
+      const stage = stages[activeStage];
+      activeStageBadge.textContent = stage.name;
+      activeStageBadge.className = `badge ${statusClass(stage.status)}`;
+      checkpointsEl.innerHTML = stage.checkpoints.map(item => `<span class="chip">${item}</span>`).join("");
+      outputsEl.innerHTML = stage.outputs.map(item => `<span class="chip">${item}</span>`).join("");
+    }
+
+    function renderSkills(items = skills) {
+      skillList.innerHTML = items.slice(0, 6).map(([title, desc], index) => `
+        <article class="skill">
+          <div class="skill-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg>
+          </div>
+          <div>
+            <h4>${title}</h4>
+            <p>${desc}</p>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderResources(items = resources) {
+      resourceMatrix.innerHTML = items.map(([title, desc, count]) => `
+        <article class="matrix-item">
+          <span class="badge green">${count} 条</span>
+          <h4>${title}</h4>
+          <p>${desc}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderTasks() {
+      const visible = taskFilter === "all" ? tasks : tasks.filter(task => task.type === taskFilter);
+      taskCount.textContent = `${visible.length} 项`;
+      taskList.innerHTML = visible.map(task => {
+        const originalIndex = tasks.indexOf(task);
+        return `
+          <article class="task ${task.done ? "done" : ""}">
+            <button class="check" aria-label="切换完成状态" data-index="${originalIndex}">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+            <div>
+              <h4>${task.title}</h4>
+              <p>${task.meta}</p>
+            </div>
+            <span class="badge ${task.type === "risk" ? "red" : "green"}">${task.type === "risk" ? "风险" : task.type === "creator" ? "达人" : "策略"}</span>
+          </article>
+        `;
+      }).join("");
+
+      taskList.querySelectorAll(".check").forEach(button => {
+        button.addEventListener("click", () => {
+          const index = Number(button.dataset.index);
+          tasks[index].done = !tasks[index].done;
+          updateProgress();
+          renderTasks();
+        });
+      });
+    }
+
+    function updateProgress() {
+      const done = tasks.filter(task => task.done).length;
+      progressMetric.textContent = `${Math.round(done / tasks.length * 100)}%`;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    document.querySelectorAll(".nav button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        document.querySelector(`#${button.dataset.section}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+        tab.classList.add("active");
+        taskFilter = tab.dataset.filter;
+        renderTasks();
+      });
+    });
+
+    document.querySelector("#globalSearch").addEventListener("input", event => {
+      const keyword = event.target.value.trim().toLowerCase();
+      const matchedSkills = keyword ? skills.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : skills;
+      const matchedResources = keyword ? resources.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : resources;
+      renderSkills(matchedSkills);
+      renderResources(matchedResources);
+    });
+
+    document.querySelector("#newProjectBtn").addEventListener("click", () => {
+      showToast("已生成新项目流程骨架：从 Brief 开始推进");
+      activeStage = 0;
+      renderFlow();
+      renderStageDetail();
+    });
+
+    document.querySelector("#exportBtn").addEventListener("click", () => {
+      showToast("执行清单已整理：Brief、达人、脚本风险优先处理");
+    });
+
+    document.querySelector("#syncBtn").addEventListener("click", () => {
+      showToast("资源库结构已对齐 Obsidian：案例、达人、创意、复盘");
+    });
+
+    renderFlow();
+    renderStageDetail();
+    renderSkills();
+    renderResources();
+    renderTasks();
+    updateProgress();
+  </script>
+</body>
+</html>
