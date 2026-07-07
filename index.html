@@ -299,26 +299,72 @@
     .flow {
       padding: 18px;
       display: grid;
-      grid-template-columns: repeat(5, minmax(140px, 1fr));
-      gap: 12px;
+      gap: 0;
     }
 
     .stage {
-      min-height: 136px;
-      padding: 14px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: #fbfaf5;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      position: relative;
+      min-height: 112px;
+      padding: 0 0 18px 56px;
+      background: transparent;
+      display: grid;
+      grid-template-columns: minmax(120px, .28fr) minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
       text-align: left;
       color: var(--ink);
+      border: 0;
     }
 
-    .stage.active {
+    .stage::before {
+      content: "";
+      position: absolute;
+      left: 21px;
+      top: 38px;
+      bottom: -2px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .stage:last-child::before {
+      display: none;
+    }
+
+    .stage.active .stage-index {
+      background: var(--green);
+      box-shadow: 0 0 0 6px var(--green-soft);
+    }
+
+    .stage.done .stage-index {
+      background: #1f2a2e;
+    }
+
+    .stage.pending .stage-index {
+      background: #9ba39d;
+    }
+
+    .stage-main {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 14px;
+    }
+
+    .stage.active .stage-main {
       border-color: var(--green);
       background: var(--green-soft);
+    }
+
+    .stage.done .stage-main {
+      background: #f4f6f1;
+    }
+
+    .stage.pending .stage-main {
+      opacity: .72;
     }
 
     .stage-top {
@@ -326,9 +372,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      margin-bottom: 9px;
     }
 
     .stage-index {
+      position: absolute;
+      left: 8px;
+      top: 3px;
       width: 26px;
       height: 26px;
       border-radius: 7px;
@@ -340,6 +390,17 @@
       font-weight: 700;
     }
 
+    .stage-label {
+      padding-top: 5px;
+    }
+
+    .stage-label small {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
     .stage h4 {
       margin: 0;
       font-size: 15px;
@@ -347,6 +408,14 @@
 
     .stage p {
       margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .stage-action {
+      min-width: 132px;
+      padding-top: 1px;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.55;
@@ -561,34 +630,6 @@
       line-height: 1.6;
     }
 
-    .ai-flow {
-      padding: 18px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .ai-step {
-      position: relative;
-      border-radius: 8px;
-      padding: 14px;
-      background: #fbfaf5;
-      border: 1px solid var(--line);
-      min-height: 110px;
-    }
-
-    .ai-step h4 {
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .ai-step p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
     .toast {
       position: fixed;
       right: 22px;
@@ -616,12 +657,17 @@
         grid-template-columns: 1fr;
       }
 
-      .flow {
-        grid-template-columns: repeat(3, minmax(140px, 1fr));
+      .stage {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
       }
 
-      .matrix,
-      .ai-flow {
+      .stage-action {
+        min-width: 0;
+        padding-top: 0;
+      }
+
+      .matrix {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -654,9 +700,7 @@
       }
 
       .metric-grid,
-      .flow,
-      .matrix,
-      .ai-flow {
+      .matrix {
         grid-template-columns: 1fr;
       }
 
@@ -694,10 +738,6 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           资源库
         </button>
-        <button data-section="ai">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-          AI 工作流
-        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -710,7 +750,7 @@
       <div class="topbar">
         <div class="title-block">
           <h2>营销执行流程系统</h2>
-          <p>把游戏营销策划的“方法、素材、经验、AI 效率”放进同一个工作台，从项目 Brief 到复盘入库，每一步都有检查项、产出物和资源入口。</p>
+          <p>把游戏营销策划的“执行流程、Skill 方法、资源沉淀”放进同一个工作台，从项目 Brief 到复盘入库，每一步都有检查项、产出物和资源入口。</p>
         </div>
         <div class="actions">
           <label class="search" for="globalSearch">
@@ -817,38 +857,6 @@
         </div>
         <div class="matrix" id="resourceMatrix"></div>
       </section>
-
-      <section class="panel" id="ai" style="margin-top:18px;">
-        <div class="panel-header">
-          <div>
-            <h3>AI 增强工作流</h3>
-            <p>ChatGPT 做策略，Codex 做结构化，Typeless 做转写，Obsidian 做沉淀。</p>
-          </div>
-          <span class="badge green">效率层</span>
-        </div>
-        <div class="ai-flow">
-          <div class="ai-step">
-            <span class="badge green">1</span>
-            <h4>ChatGPT 策略</h4>
-            <p>辅助需求拆解、卖点提炼、创意方向、Brief 初稿和风险预判。</p>
-          </div>
-          <div class="ai-step">
-            <span class="badge green">2</span>
-            <h4>Codex 结构化</h4>
-            <p>把流程、表格、检查项和资源目录整理成可执行的系统界面。</p>
-          </div>
-          <div class="ai-step">
-            <span class="badge green">3</span>
-            <h4>Typeless 转写</h4>
-            <p>把会议、客户反馈、达人沟通内容转成可检索的文字资产。</p>
-          </div>
-          <div class="ai-step">
-            <span class="badge green">4</span>
-            <h4>Obsidian 沉淀</h4>
-            <p>将项目案例、踩坑、客户偏好和平台观察持续入库。</p>
-          </div>
-        </div>
-      </section>
     </main>
   </div>
 
@@ -860,6 +868,7 @@
         name: "Brief",
         desc: "确认背景、任务、必须项、禁止项和交付结构。",
         status: "进行中",
+        next: "先把需求边界问清楚，再进入目标拆解。",
         checkpoints: ["项目", "游戏", "节点", "目标", "平台", "预算", "周期", "禁区"],
         outputs: ["需求卡片", "对客问题清单", "执行边界"]
       },
@@ -867,6 +876,7 @@
         name: "拆解",
         desc: "把业务目标拆成可执行的策略动作和内容方向。",
         status: "待补充",
+        next: "输出执行路径后，再安排游戏体验和社区调研。",
         checkpoints: ["目标拆解", "平台拆解", "上线时间", "资源缺口"],
         outputs: ["执行路径", "任务分工", "排期草案"]
       },
@@ -874,6 +884,7 @@
         name: "体验",
         desc: "找出爽点、卖点、可视化点和风险点。",
         status: "已完成",
+        next: "把体验笔记转成卖点语言，供调研和创意使用。",
         checkpoints: ["爽点", "卖点", "可视化点", "风险点"],
         outputs: ["体验笔记", "卖点库", "内容切角"]
       },
@@ -881,6 +892,7 @@
         name: "调研",
         desc: "观察社区情绪、热点、吐槽和梗的传播土壤。",
         status: "进行中",
+        next: "提炼用户语言，进入创意发散。",
         checkpoints: ["情绪", "热点", "吐槽", "梗", "竞品"],
         outputs: ["社区观察", "用户语言", "避雷点"]
       },
@@ -888,6 +900,7 @@
         name: "创意",
         desc: "围绕梗化、场景、冲突、角色、视觉和社交做发散。",
         status: "待评审",
+        next: "确认创意方向后，再匹配达人内容形态。",
         checkpoints: ["梗化", "场景", "冲突", "角色", "视觉", "二创"],
         outputs: ["创意方向", "内容选题", "脚本框架"]
       },
@@ -895,6 +908,7 @@
         name: "达人",
         desc: "从内容、人设、数据、适配度和风险筛选达人。",
         status: "进行中",
+        next: "达人名单确认后，进入脚本预审和报价沟通。",
         checkpoints: ["内容", "人设", "数据", "适配", "风险"],
         outputs: ["达人名单", "报价口径", "风险标注"]
       },
@@ -902,6 +916,7 @@
         name: "脚本",
         desc: "预审钩子、硬广感、理解准确性、风险和客户偏好。",
         status: "预警",
+        next: "脚本风险清掉后，才能进入正式执行。",
         checkpoints: ["钩子", "硬广", "理解", "风险", "客户偏好"],
         outputs: ["脚本批注", "修改建议", "确认版本"]
       },
@@ -909,6 +924,7 @@
         name: "执行",
         desc: "同步完成项、进行中、卡点、支持需求和下一步计划。",
         status: "进行中",
+        next: "执行结束后，收集数据和反馈进入复盘。",
         checkpoints: ["完成", "进行中", "卡点", "支持", "计划"],
         outputs: ["执行日报", "问题清单", "客户同步"]
       },
@@ -916,6 +932,7 @@
         name: "复盘",
         desc: "沉淀有效、无效、反馈、踩坑和可复制经验。",
         status: "待开始",
+        next: "复盘结论整理完成后，进入资源入库。",
         checkpoints: ["有效", "无效", "反馈", "踩坑", "经验"],
         outputs: ["复盘报告", "经验卡片", "踩坑库"]
       },
@@ -923,6 +940,7 @@
         name: "入库",
         desc: "把项目结果归档到案例、平台、品类、提示词等资源库。",
         status: "待开始",
+        next: "沉淀为下一次项目可直接调用的资产。",
         checkpoints: ["案例", "达人", "创意", "客户", "平台", "品类"],
         outputs: ["资源标签", "可复用模板", "下次引用入口"]
       }
@@ -982,13 +1000,20 @@
 
     function renderFlow() {
       flowEl.innerHTML = stages.map((stage, index) => `
-        <button class="stage ${index === activeStage ? "active" : ""}" data-index="${index}">
-          <span class="stage-top">
-            <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
-            <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+        <button class="stage ${index < activeStage ? "done" : index === activeStage ? "active" : "pending"}" data-index="${index}">
+          <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="stage-label">
+            <small>${index < activeStage ? "已走过" : index === activeStage ? "当前环节" : "后续环节"}</small>
+            <h4>${stage.name}</h4>
           </span>
-          <h4>${stage.name}</h4>
-          <p>${stage.desc}</p>
+          <span class="stage-main">
+            <span class="stage-top">
+              <strong>${stage.name}</strong>
+              <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+            </span>
+            <p>${stage.desc}</p>
+          </span>
+          <span class="stage-action">${stage.next}</span>
         </button>
       `).join("");
 
