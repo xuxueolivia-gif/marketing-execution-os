@@ -236,6 +236,18 @@
       align-items: start;
     }
 
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .overview-grid.page.active {
+      display: grid;
+    }
+
     .panel {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -271,6 +283,10 @@
       margin-bottom: 18px;
     }
 
+    .page:not(.active) {
+      display: none !important;
+    }
+
     .metric {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -296,11 +312,6 @@
       color: var(--green);
     }
 
-    .today-overview {
-      box-shadow: none;
-    }
-
-    .overview-todo-list,
     .today-list {
       padding: 12px;
       display: grid;
@@ -344,7 +355,7 @@
       padding: 0 0 18px 56px;
       background: transparent;
       display: grid;
-      grid-template-columns: minmax(120px, .28fr) minmax(0, 1fr) auto;
+      grid-template-columns: minmax(160px, .28fr) minmax(0, 1fr);
       gap: 16px;
       align-items: start;
       text-align: left;
@@ -388,6 +399,8 @@
       border-radius: 8px;
       background: #fbfaf5;
       padding: 14px;
+      display: grid;
+      gap: 10px;
     }
 
     .stage.active .stage-main {
@@ -409,6 +422,25 @@
       justify-content: space-between;
       gap: 8px;
       margin-bottom: 9px;
+    }
+
+    .stage-edit {
+      display: none;
+      gap: 10px;
+    }
+
+    .stage.active .stage-edit {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .stage.active .stage-summary-status {
+      display: none;
+    }
+
+    .stage.active .stage-summary-group {
+      display: none;
     }
 
     .stage-index {
@@ -437,6 +469,23 @@
       margin-bottom: 6px;
     }
 
+    .stage-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .stage-point {
+      min-height: 24px;
+      border-radius: 6px;
+      background: #eef1ec;
+      color: var(--muted);
+      padding: 4px 7px;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
     .stage h4 {
       margin: 0;
       font-size: 15px;
@@ -449,12 +498,107 @@
       line-height: 1.55;
     }
 
-    .stage-action {
-      min-width: 132px;
-      padding-top: 1px;
+    .stage-summary-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stage-cycle-badge {
+      background: #eef1ec;
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
+    }
+
+    .stage-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stage-input,
+    .stage-status-select,
+    .stage-cycle-select {
+      width: 100%;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 10px;
+      outline: 0;
+    }
+
+    .stage-input {
+      min-height: 116px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .stage-status-select,
+    .stage-cycle-select {
+      width: auto;
+      min-height: 34px;
+      padding: 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stage-cycle-select {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .stage-input:focus,
+    .stage-status-select:focus,
+    .stage-cycle-select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(47, 111, 98, .12);
+    }
+
+    .stage-status-select.status-not-started {
+      background: #eef1ec;
+      color: var(--muted);
+    }
+
+    .stage-status-select.status-active,
+    .stage-status-select.status-done {
+      background: var(--green-soft);
+      color: var(--green);
+      border-color: rgba(47, 111, 98, .28);
+    }
+
+    .stage-status-select.status-pending {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+      border-color: rgba(189, 139, 43, .3);
+    }
+
+    .stage-status-select.status-risk {
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: rgba(184, 75, 63, .28);
+    }
+
+    .stage-confirm {
+      min-height: 34px;
+      border-radius: 8px;
+      padding: 0 10px;
+      background: var(--green);
+      color: #fff;
+      white-space: nowrap;
+      min-width: 86px;
+      justify-self: start;
+    }
+
+    .stage-confirm.saved {
+      background: #eef1ec;
+      color: var(--green);
+      border: 1px solid rgba(47, 111, 98, .24);
     }
 
     .badge {
@@ -483,14 +627,6 @@
     .badge.yellow {
       background: var(--yellow-soft);
       color: var(--yellow);
-    }
-
-    .stage-detail {
-      padding: 18px;
-      border-top: 1px solid var(--line);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
     }
 
     .detail-box {
@@ -651,7 +787,7 @@
 
     .todo-row {
       display: grid;
-      grid-template-columns: 150px minmax(0, 1fr) 110px 120px;
+      grid-template-columns: 150px minmax(0, 1fr) 120px 130px 88px;
       gap: 12px;
       align-items: center;
       border: 1px solid var(--line);
@@ -683,6 +819,68 @@
     .todo-select:focus {
       border-color: var(--green);
       box-shadow: 0 0 0 3px rgba(47, 111, 98, .12);
+    }
+
+    .todo-select.priority-s {
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: rgba(184, 75, 63, .28);
+    }
+
+    .todo-select.priority-a {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+      border-color: rgba(189, 139, 43, .3);
+    }
+
+    .todo-select.priority-b {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: rgba(68, 108, 155, .3);
+    }
+
+    .todo-select.priority-c {
+      background: var(--green-soft);
+      color: var(--green);
+      border-color: rgba(47, 111, 98, .28);
+    }
+
+    .todo-select.status-not-started {
+      background: #eef1ec;
+      color: var(--muted);
+    }
+
+    .todo-select.status-active {
+      background: var(--green-soft);
+      color: var(--green);
+      border-color: rgba(47, 111, 98, .28);
+    }
+
+    .todo-select.status-pending {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+      border-color: rgba(189, 139, 43, .3);
+    }
+
+    .todo-select.status-done {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: rgba(68, 108, 155, .3);
+    }
+
+    .confirm-btn {
+      min-height: 38px;
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      padding: 0 12px;
+      white-space: nowrap;
+    }
+
+    .confirm-btn.saved {
+      background: #eef1ec;
+      color: var(--green);
+      border: 1px solid rgba(47, 111, 98, .24);
     }
 
     .priority {
@@ -764,19 +962,13 @@
     }
 
     @media (max-width: 1180px) {
-      .layout,
-      .stage-detail {
+      .layout {
         grid-template-columns: 1fr;
       }
 
       .stage {
         grid-template-columns: minmax(0, 1fr);
         gap: 10px;
-      }
-
-      .stage-action {
-        min-width: 0;
-        padding-top: 0;
       }
 
       .overview-grid {
@@ -855,6 +1047,10 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
           总览
         </button>
+        <button data-section="todo">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          工作待办
+        </button>
         <button data-section="process">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h16"/></svg>
           执行流程
@@ -867,10 +1063,6 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           资源库
         </button>
-        <button data-section="todo">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          工作待办
-        </button>
         <button data-section="admin">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
           管理员后台
@@ -879,7 +1071,7 @@
 
       <div class="sidebar-footer">
         <strong>标准流程</strong><br>
-        Brief → 拆解 → 体验 → 调研 → 创意 → 达人 → 脚本 → 执行 → 复盘 → 入库
+        需求拆解 → 用户/社区调研 → 策略收束 → 创意发散 → 达人筛选 → 内容brief → 报价确认 → 内容监修 → 项目复盘
       </div>
     </aside>
 
@@ -905,86 +1097,25 @@
         </div>
       </div>
 
-      <section class="overview-grid" id="overview">
-        <section class="panel today-overview">
+      <section class="overview-grid page active" id="overview" data-page="overview">
+        <section class="panel">
           <div class="panel-header">
             <div>
               <h3>今日待办事项</h3>
-              <p>这里和“今日执行清单”使用同一份待办数据。</p>
+              <p>工作待办中确认后的事项会同步显示在这里。</p>
             </div>
             <span class="badge yellow" id="todoMetric">0 项</span>
           </div>
-          <div class="overview-todo-list" id="todayOverviewList"></div>
+          <div class="today-list" id="overviewTodoList"></div>
         </section>
         <div class="metric">
           <span>当前项目整体进度</span>
           <strong id="progressMetric">10%</strong>
-          <small id="progressMetricNote">当前环节：Brief</small>
+          <small id="progressMetricNote">当前环节：01 需求拆解</small>
         </div>
       </section>
 
-      <div class="layout">
-        <section class="panel" id="process">
-          <div class="panel-header">
-            <div>
-              <h3>项目执行主流程</h3>
-              <p>点击阶段查看检查项、产出物和下一步动作。</p>
-            </div>
-            <span class="badge green" id="activeStageBadge">Brief</span>
-          </div>
-          <div class="flow" id="flow"></div>
-          <div class="stage-detail">
-            <div class="detail-box">
-              <h4>检查项</h4>
-              <div class="chip-list" id="checkpoints"></div>
-            </div>
-            <div class="detail-box">
-              <h4>关键产出</h4>
-              <div class="chip-list" id="outputs"></div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="side-stack">
-          <section class="panel" id="tasks">
-            <div class="panel-header">
-              <div>
-                <h3>今日执行清单</h3>
-                <p>与今日待办事项同步，展示今天需要推进的明细。</p>
-              </div>
-              <span class="badge yellow" id="taskCount">0 项</span>
-            </div>
-            <div class="today-list" id="taskList"></div>
-          </section>
-
-          <section class="panel" id="skills">
-            <div class="panel-header">
-              <div>
-                <h3>Skill 库</h3>
-                <p>把经验变成可复用的动作。</p>
-              </div>
-              <span class="badge green">10 类</span>
-            </div>
-            <div class="skill-list" id="skillList"></div>
-          </section>
-        </aside>
-      </div>
-
-      <section class="panel" id="library" style="margin-top:18px;">
-        <div class="panel-header">
-          <div>
-            <h3>资源库矩阵</h3>
-            <p>当前框架先接入达人资源，后续可继续扩展项目案例、创意案例、客户偏好等资源。</p>
-          </div>
-          <button class="small-btn" id="syncBtn">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-15-6.7L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 15 6.7L21 16"/><path d="M16 16h5v5"/></svg>
-            同步 Obsidian
-          </button>
-        </div>
-        <div class="matrix" id="resourceMatrix"></div>
-      </section>
-
-      <section class="panel" id="todo" style="margin-top:18px;">
+      <section class="panel page" id="todo" data-page="todo">
         <div class="panel-header">
           <div>
             <h3>工作待办</h3>
@@ -998,7 +1129,43 @@
         <div class="todo-board" id="todoBoard"></div>
       </section>
 
-      <section class="panel" id="admin" style="margin-top:18px;">
+      <section class="panel page" id="process" data-page="process">
+          <div class="panel-header">
+            <div>
+              <h3>项目执行主流程</h3>
+              <p>按顺序维护每个环节的状态和说明。</p>
+            </div>
+            <span class="badge green" id="activeStageBadge">需求拆解</span>
+          </div>
+          <div class="flow" id="flow"></div>
+      </section>
+
+      <section class="panel page" id="skills" data-page="skills">
+        <div class="panel-header">
+          <div>
+            <h3>Skill 库</h3>
+            <p>把经验变成可复用的动作。</p>
+          </div>
+          <span class="badge green">10 类</span>
+        </div>
+        <div class="skill-list" id="skillList"></div>
+      </section>
+
+      <section class="panel page" id="library" data-page="library">
+        <div class="panel-header">
+          <div>
+            <h3>资源库矩阵</h3>
+            <p>当前框架先接入达人资源，后续可继续扩展项目案例、创意案例、客户偏好等资源。</p>
+          </div>
+          <button class="small-btn" id="syncBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-15-6.7L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 15 6.7L21 16"/><path d="M16 16h5v5"/></svg>
+            同步 Obsidian
+          </button>
+        </div>
+        <div class="matrix" id="resourceMatrix"></div>
+      </section>
+
+      <section class="panel page" id="admin" data-page="admin">
         <div class="panel-header">
           <div>
             <h3>管理员后台</h3>
@@ -1009,7 +1176,7 @@
         <div class="admin-list">
           <article class="admin-card">
             <h4>流程配置</h4>
-            <p>维护 01 Brief 到 10 入库的环节名称、说明、检查项和产出物。</p>
+            <p>维护 Excel 导入的 9 个执行环节名称、说明和要点。</p>
           </article>
           <article class="admin-card">
             <h4>资源字段</h4>
@@ -1027,86 +1194,71 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const stages = [
+    const stageCycleOptions = ["未设置周期", "当天", "1-2天", "3-5天", "1周", "2周", "1个月"];
+
+    const defaultStages = [
       {
-        name: "Brief",
-        desc: "确认背景、任务、必须项、禁止项和交付结构。",
-        status: "进行中",
-        next: "先把需求边界问清楚，再进入目标拆解。",
-        checkpoints: ["项目", "游戏", "节点", "目标", "平台", "预算", "周期", "禁区"],
-        outputs: ["需求卡片", "对客问题清单", "执行边界"]
+        name: "需求拆解",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["项目", "游戏", "节点", "目标", "平台", "预算", "周期", "上线时间", "要求", "禁区"],
+        outputs: []
       },
       {
-        name: "拆解",
-        desc: "把业务目标拆成可执行的策略动作和内容方向。",
-        status: "待补充",
-        next: "输出执行路径后，再安排游戏体验和社区调研。",
-        checkpoints: ["目标拆解", "平台拆解", "上线时间", "资源缺口"],
-        outputs: ["执行路径", "任务分工", "排期草案"]
+        name: "用户/社区调研",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["情绪", "热点", "吐槽", "梗"],
+        outputs: []
       },
       {
-        name: "体验",
-        desc: "找出爽点、卖点、可视化点和风险点。",
-        status: "已完成",
-        next: "把体验笔记转成卖点语言，供调研和创意使用。",
-        checkpoints: ["爽点", "卖点", "可视化点", "风险点"],
-        outputs: ["体验笔记", "卖点库", "内容切角"]
+        name: "策略收束",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["诉求", "主题", "主线", "排期"],
+        outputs: []
       },
       {
-        name: "调研",
-        desc: "观察社区情绪、热点、吐槽和梗的传播土壤。",
-        status: "进行中",
-        next: "提炼用户语言，进入创意发散。",
-        checkpoints: ["情绪", "热点", "吐槽", "梗", "竞品"],
-        outputs: ["社区观察", "用户语言", "避雷点"]
+        name: "创意发散",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["梗化", "场景", "冲突", "角色", "视觉", "社交", "二创"],
+        outputs: []
       },
       {
-        name: "创意",
-        desc: "围绕梗化、场景、冲突、角色、视觉和社交做发散。",
-        status: "待评审",
-        next: "确认创意方向后，再匹配达人内容形态。",
-        checkpoints: ["梗化", "场景", "冲突", "角色", "视觉", "二创"],
-        outputs: ["创意方向", "内容选题", "脚本框架"]
-      },
-      {
-        name: "达人",
-        desc: "从内容、人设、数据、适配度和风险筛选达人。",
-        status: "进行中",
-        next: "达人名单确认后，进入脚本预审和报价沟通。",
+        name: "达人筛选",
+        desc: "",
+        status: "待启动",
         checkpoints: ["内容", "人设", "数据", "适配", "风险"],
-        outputs: ["达人名单", "报价口径", "风险标注"]
+        outputs: []
       },
       {
-        name: "脚本",
-        desc: "预审钩子、硬广感、理解准确性、风险和客户偏好。",
-        status: "预警",
-        next: "脚本风险清掉后，才能进入正式执行。",
+        name: "内容brief",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["背景", "任务", "必须", "禁止", "结构", "建议"],
+        outputs: []
+      },
+      {
+        name: "报价确认",
+        desc: "",
+        status: "待启动",
+        checkpoints: ["口径", "成本", "对客价", "媒介确认"],
+        outputs: []
+      },
+      {
+        name: "内容监修",
+        desc: "",
+        status: "待启动",
         checkpoints: ["钩子", "硬广", "理解", "风险", "客户偏好"],
-        outputs: ["脚本批注", "修改建议", "确认版本"]
+        outputs: []
       },
       {
-        name: "执行",
-        desc: "同步完成项、进行中、卡点、支持需求和下一步计划。",
-        status: "进行中",
-        next: "执行结束后，收集数据和反馈进入复盘。",
-        checkpoints: ["完成", "进行中", "卡点", "支持", "计划"],
-        outputs: ["执行日报", "问题清单", "客户同步"]
-      },
-      {
-        name: "复盘",
-        desc: "沉淀有效、无效、反馈、踩坑和可复制经验。",
-        status: "待开始",
-        next: "复盘结论整理完成后，进入资源入库。",
+        name: "项目复盘",
+        desc: "",
+        status: "待启动",
         checkpoints: ["有效", "无效", "反馈", "踩坑", "经验"],
-        outputs: ["复盘报告", "经验卡片", "踩坑库"]
-      },
-      {
-        name: "入库",
-        desc: "把项目结果归档到案例、平台、品类、提示词等资源库。",
-        status: "待开始",
-        next: "沉淀为下一次项目可直接调用的资产。",
-        checkpoints: ["案例", "达人", "创意", "客户", "平台", "品类"],
-        outputs: ["资源标签", "可复用模板", "下次引用入口"]
+        outputs: []
       }
     ];
 
@@ -1131,46 +1283,47 @@
       {
         id: "todo-1",
         date: getTodayDate(),
-        title: "补齐新项目 Brief 禁区：确认客户必须项、禁止项、预算、上线时间",
-        priority: "S",
-        status: "执行中"
+        title: "",
+        priority: "B",
+        status: "待启动",
+        confirmed: false
       },
       {
         id: "todo-2",
         date: getTodayDate(),
-        title: "筛选首批达人名单：按内容、人设、数据、适配度和风险做初筛",
+        title: "",
         priority: "A",
-        status: "待确认"
+        status: "待确认",
+        confirmed: false
       },
       {
         id: "todo-3",
         date: getOffsetDate(1),
-        title: "整理社区调研结论：沉淀情绪、热点、吐槽和可用梗",
-        priority: "B",
-        status: "待启动"
+        title: "",
+        priority: "S",
+        status: "待启动",
+        confirmed: false
       },
       {
         id: "todo-4",
         date: getOffsetDate(3),
-        title: "复盘上一轮脚本预审问题：把硬广、理解偏差、客户偏好写入经验",
+        title: "",
         priority: "C",
-        status: "已完成"
+        status: "已完成",
+        confirmed: false
       }
     ];
 
+    let stages = loadStages();
     let todos = loadTodos();
-    let activeStage = 0;
+    let activeStage = null;
 
     const flowEl = document.querySelector("#flow");
-    const checkpointsEl = document.querySelector("#checkpoints");
-    const outputsEl = document.querySelector("#outputs");
     const activeStageBadge = document.querySelector("#activeStageBadge");
     const skillList = document.querySelector("#skillList");
     const resourceMatrix = document.querySelector("#resourceMatrix");
     const todoBoard = document.querySelector("#todoBoard");
-    const todayOverviewList = document.querySelector("#todayOverviewList");
-    const taskList = document.querySelector("#taskList");
-    const taskCount = document.querySelector("#taskCount");
+    const overviewTodoList = document.querySelector("#overviewTodoList");
     const todoMetric = document.querySelector("#todoMetric");
     const progressMetric = document.querySelector("#progressMetric");
     const progressMetricNote = document.querySelector("#progressMetricNote");
@@ -1195,7 +1348,7 @@
 
     function loadTodos() {
       try {
-        const saved = window.localStorage.getItem("gameMarketingTodos");
+        const saved = window.localStorage.getItem("gameMarketingTodosV2");
         return normalizeTodos(saved ? JSON.parse(saved) : defaultTodos);
       } catch (error) {
         return normalizeTodos(defaultTodos);
@@ -1203,7 +1356,31 @@
     }
 
     function saveTodos() {
-      window.localStorage.setItem("gameMarketingTodos", JSON.stringify(todos));
+      window.localStorage.setItem("gameMarketingTodosV2", JSON.stringify(todos));
+    }
+
+    function loadStages() {
+      try {
+        const saved = window.localStorage.getItem("gameMarketingStagesV2");
+        return normalizeStages(saved ? JSON.parse(saved) : defaultStages);
+      } catch (error) {
+        return normalizeStages(defaultStages);
+      }
+    }
+
+    function saveStages() {
+      window.localStorage.setItem("gameMarketingStagesV2", JSON.stringify(stages));
+    }
+
+    function normalizeStages(items) {
+      return items.map((item, index) => ({
+        ...defaultStages[index],
+        ...item,
+        desc: item.desc || "",
+        status: item.status || "待启动",
+        cycle: item.cycle || "未设置周期",
+        confirmed: Boolean(item.confirmed)
+      }));
     }
 
     function normalizeTodos(items) {
@@ -1221,7 +1398,8 @@
           title,
           desc: "",
           priority: ["S", "A", "B", "C"].includes(item.priority) ? item.priority : "B",
-          status: ["待启动", "执行中", "待确认", "已完成"].includes(item.status) ? item.status : "待启动"
+          status: ["待启动", "执行中", "待确认", "已完成"].includes(item.status) ? item.status : "待启动",
+          confirmed: Boolean(item.confirmed)
         };
       });
     }
@@ -1234,39 +1412,90 @@
 
     function renderFlow() {
       flowEl.innerHTML = stages.map((stage, index) => `
-        <button class="stage ${index < activeStage ? "done" : index === activeStage ? "active" : "pending"}" data-index="${index}">
+        <article class="stage ${index === activeStage ? "active" : stage.confirmed ? "done" : "pending"}" data-index="${index}">
           <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
           <span class="stage-label">
-            <small>${index < activeStage ? "已走过" : index === activeStage ? "当前环节" : "后续环节"}</small>
+            <small>${index === activeStage ? "已展开" : stage.confirmed ? "已确认" : "点击展开"}</small>
             <h4>${stage.name}</h4>
+            <span class="stage-points">
+              ${stage.checkpoints.map(point => `<span class="stage-point">${escapeHtml(point)}</span>`).join("")}
+            </span>
           </span>
           <span class="stage-main">
             <span class="stage-top">
               <strong>${stage.name}</strong>
-              <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+              <span class="stage-summary-group">
+                ${stage.cycle && stage.cycle !== "未设置周期" ? `<span class="badge stage-cycle-badge">${stage.cycle}</span>` : ""}
+                <span class="badge ${statusClass(stage.status)} stage-summary-status">${stage.status}</span>
+              </span>
             </span>
-            <p>${stage.desc}</p>
+            <span class="stage-edit">
+              <span class="stage-controls">
+                <select class="stage-status-select ${stageStatusSelectClass(stage.status)}" data-index="${index}" data-field="status" aria-label="${stage.name} 当前状态">
+                  ${["待启动", "进行中", "待补充", "待评审", "已完成", "预警"].map(value => `<option value="${value}" ${stage.status === value ? "selected" : ""}>${value}</option>`).join("")}
+                </select>
+                <select class="stage-cycle-select" data-index="${index}" data-field="cycle" aria-label="${stage.name} 执行周期">
+                  ${stageCycleOptions.map(value => `<option value="${value}" ${stage.cycle === value ? "selected" : ""}>${value}</option>`).join("")}
+                </select>
+              </span>
+              <textarea class="stage-input" data-index="${index}" data-field="desc" aria-label="${stage.name} 环节说明" placeholder="填写该环节说明">${escapeHtml(stage.desc)}</textarea>
+              <button class="stage-confirm ${stage.confirmed ? "saved" : ""}" data-index="${index}" type="button">${stage.confirmed ? "已确认" : "确认"}</button>
+            </span>
           </span>
-          <span class="stage-action">${stage.next}</span>
-        </button>
+        </article>
       `).join("");
 
       flowEl.querySelectorAll(".stage").forEach(button => {
-        button.addEventListener("click", () => {
-          activeStage = Number(button.dataset.index);
+        button.addEventListener("click", event => {
+          if (event.target.closest("input, select, button, textarea")) return;
+          const index = Number(button.dataset.index);
+          activeStage = activeStage === index ? null : index;
           renderFlow();
           renderStageDetail();
           updateOverview();
         });
       });
+
+      flowEl.querySelectorAll("[data-field]").forEach(control => {
+        const updateControl = () => {
+          const stage = stages[Number(control.dataset.index)];
+          if (!stage) return;
+          stage[control.dataset.field] = control.value;
+          stage.confirmed = false;
+          const row = control.closest(".stage");
+          const button = row?.querySelector(".stage-confirm");
+          if (button) {
+            button.textContent = "确认";
+            button.classList.remove("saved");
+          }
+          if (control.dataset.field === "status") {
+            control.className = `stage-status-select ${stageStatusSelectClass(control.value)}`;
+            renderStageDetail();
+          }
+          updateOverview();
+        };
+        control.addEventListener("input", updateControl);
+        control.addEventListener("change", updateControl);
+      });
+
+      flowEl.querySelectorAll(".stage-confirm").forEach(button => {
+        button.addEventListener("click", () => {
+          const stage = stages[Number(button.dataset.index)];
+          if (!stage) return;
+          stage.confirmed = true;
+          saveStages();
+          button.textContent = "已确认";
+          button.classList.add("saved");
+          updateOverview();
+          showToast("流程环节已确认");
+        });
+      });
     }
 
     function renderStageDetail() {
-      const stage = stages[activeStage];
+      const stage = stages[activeStage ?? 0];
       activeStageBadge.textContent = stage.name;
       activeStageBadge.className = `badge ${statusClass(stage.status)}`;
-      checkpointsEl.innerHTML = stage.checkpoints.map(item => `<span class="chip">${item}</span>`).join("");
-      outputsEl.innerHTML = stage.outputs.map(item => `<span class="chip">${item}</span>`).join("");
     }
 
     function renderSkills(items = skills) {
@@ -1297,11 +1526,37 @@
       return priority.toLowerCase();
     }
 
+    function prioritySelectClass(priority) {
+      return `priority-${priorityClass(priority)}`;
+    }
+
+    function statusSelectClass(status) {
+      const statusMap = {
+        "待启动": "status-not-started",
+        "执行中": "status-active",
+        "待确认": "status-pending",
+        "已完成": "status-done"
+      };
+      return statusMap[status] || "status-not-started";
+    }
+
     function statusBadgeClass(status) {
       if (status === "执行中") return "green";
       if (status === "待确认") return "yellow";
       if (status === "已完成") return "green";
       return "";
+    }
+
+    function stageStatusSelectClass(status) {
+      const statusMap = {
+        "待启动": "status-not-started",
+        "进行中": "status-active",
+        "待补充": "status-pending",
+        "待评审": "status-pending",
+        "已完成": "status-done",
+        "预警": "status-risk"
+      };
+      return statusMap[status] || "status-not-started";
     }
 
     function isToday(dateValue) {
@@ -1323,7 +1578,7 @@
     }
 
     function renderTodayLists() {
-      const todayTodos = todos.filter(item => isToday(item.date));
+      const todayTodos = todos.filter(item => item.confirmed && item.title.trim() && isToday(item.date));
       const listHtml = todayTodos.length ? todayTodos.map(item => `
         <article class="overview-todo">
           <span>
@@ -1334,9 +1589,7 @@
         </article>
       `).join("") : `<div class="empty-state">今日暂无待办事项，可以在“工作待办”里新增。</div>`;
 
-      todayOverviewList.innerHTML = listHtml;
-      taskList.innerHTML = listHtml;
-      taskCount.textContent = `${todayTodos.length} 项`;
+      overviewTodoList.innerHTML = listHtml;
     }
 
     function renderTodos(items = todos) {
@@ -1346,17 +1599,19 @@
           <span>待办事项</span>
           <span>紧急程度</span>
           <span>当前状态</span>
+          <span>确认</span>
         </div>
         ${items.map(item => `
           <article class="todo-row">
             <input class="todo-input" type="date" value="${escapeHtml(item.date)}" data-id="${item.id}" data-field="date" aria-label="待办日期">
-            <input class="todo-input" type="text" value="${escapeHtml(item.title)}" data-id="${item.id}" data-field="title" aria-label="待办事项">
-            <select class="todo-select" data-id="${item.id}" data-field="priority" aria-label="紧急程度">
+            <input class="todo-input" type="text" value="${escapeHtml(item.title)}" data-id="${item.id}" data-field="title" aria-label="待办事项" placeholder="填写待办事项">
+            <select class="todo-select ${prioritySelectClass(item.priority)}" data-id="${item.id}" data-field="priority" aria-label="紧急程度">
               ${["S", "A", "B", "C"].map(value => `<option value="${value}" ${item.priority === value ? "selected" : ""}>${value}</option>`).join("")}
             </select>
-            <select class="todo-select" data-id="${item.id}" data-field="status" aria-label="当前状态">
+            <select class="todo-select ${statusSelectClass(item.status)}" data-id="${item.id}" data-field="status" aria-label="当前状态">
               ${["待启动", "执行中", "待确认", "已完成"].map(value => `<option value="${value}" ${item.status === value ? "selected" : ""}>${value}</option>`).join("")}
             </select>
+            <button class="confirm-btn ${item.confirmed ? "saved" : ""}" data-id="${item.id}" type="button">${item.confirmed ? "已确认" : "确认"}</button>
           </article>
         `).join("")}
       `;
@@ -1366,20 +1621,49 @@
           const todo = todos.find(item => item.id === control.dataset.id);
           if (!todo) return;
           todo[control.dataset.field] = control.value;
+          todo.confirmed = false;
+          const row = control.closest(".todo-row");
+          const button = row?.querySelector(".confirm-btn");
+          if (button) {
+            button.textContent = "确认";
+            button.classList.remove("saved");
+          }
+          if (control.dataset.field === "priority") {
+            control.className = `todo-select ${prioritySelectClass(control.value)}`;
+          }
+          if (control.dataset.field === "status") {
+            control.className = `todo-select ${statusSelectClass(control.value)}`;
+          }
+        });
+      });
+
+      todoBoard.querySelectorAll(".confirm-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          const todo = todos.find(item => item.id === button.dataset.id);
+          if (!todo) return;
+          if (!todo.title.trim()) {
+            showToast("请先填写待办事项");
+            return;
+          }
+          todo.confirmed = true;
           saveTodos();
+          renderTodos();
           updateOverview();
           renderTodayLists();
+          showToast("待办事项已确认");
         });
       });
     }
 
     function updateOverview() {
-      const todayTodos = todos.filter(item => isToday(item.date));
-      const progress = Math.round((activeStage + 1) / stages.length * 100);
+      const confirmedCount = stages.filter(stage => stage.confirmed).length;
+      const progress = Math.round(confirmedCount / stages.length * 100);
+      const confirmedTodos = todos.filter(item => item.confirmed && item.title.trim());
 
-      todoMetric.textContent = `${todayTodos.length} 项`;
+      todoMetric.textContent = `${confirmedTodos.length} 项`;
       progressMetric.textContent = `${progress}%`;
-      progressMetricNote.textContent = `当前环节：${String(activeStage + 1).padStart(2, "0")} ${stages[activeStage].name}`;
+      const currentIndex = activeStage ?? Math.min(confirmedCount, stages.length - 1);
+      progressMetricNote.textContent = `当前环节：${String(currentIndex + 1).padStart(2, "0")} ${stages[currentIndex].name}`;
     }
 
     function showToast(message) {
@@ -1388,11 +1672,18 @@
       window.setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
+    function showPage(pageId) {
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.dataset.page === pageId);
+      });
+      document.querySelectorAll(".nav button").forEach(item => {
+        item.classList.toggle("active", item.dataset.section === pageId);
+      });
+    }
+
     document.querySelectorAll(".nav button").forEach(button => {
       button.addEventListener("click", () => {
-        document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
-        button.classList.add("active");
-        document.querySelector(`#${button.dataset.section}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        showPage(button.dataset.section);
       });
     });
 
@@ -1423,11 +1714,12 @@
     });
 
     document.querySelector("#newProjectBtn").addEventListener("click", () => {
-      showToast("已生成新项目流程骨架：从 Brief 开始推进");
+      showToast("已生成新项目流程骨架：从需求拆解开始推进");
       activeStage = 0;
       renderFlow();
       renderStageDetail();
       updateOverview();
+      showPage("process");
     });
 
     document.querySelector("#exportBtn").addEventListener("click", () => {
