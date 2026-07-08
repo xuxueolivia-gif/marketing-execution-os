@@ -266,7 +266,7 @@
 
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -861,24 +861,14 @@
 
       <section class="metric-grid" id="overview">
         <div class="metric">
-          <span>当前项目</span>
-          <strong>4</strong>
-          <small>2 个处于执行同步</small>
+          <span>今日待办事项</span>
+          <strong id="todoMetric">0</strong>
+          <small id="todoMetricStatus">待办状态统计</small>
         </div>
         <div class="metric">
-          <span>流程完成度</span>
-          <strong id="progressMetric">62%</strong>
-          <small>脚本预审需跟进</small>
-        </div>
-        <div class="metric">
-          <span>资源沉淀</span>
-          <strong>1</strong>
-          <small>当前接入达人资源</small>
-        </div>
-        <div class="metric">
-          <span>风险提醒</span>
-          <strong>3</strong>
-          <small>禁区、硬广、客户偏好</small>
+          <span>当前项目整体进度</span>
+          <strong id="progressMetric">10%</strong>
+          <small id="progressMetricNote">当前环节：Brief</small>
         </div>
       </section>
 
@@ -1140,7 +1130,10 @@
     const todoBoard = document.querySelector("#todoBoard");
     const taskList = document.querySelector("#taskList");
     const taskCount = document.querySelector("#taskCount");
+    const todoMetric = document.querySelector("#todoMetric");
+    const todoMetricStatus = document.querySelector("#todoMetricStatus");
     const progressMetric = document.querySelector("#progressMetric");
+    const progressMetricNote = document.querySelector("#progressMetricNote");
     const toast = document.querySelector("#toast");
 
     function statusClass(status) {
@@ -1173,6 +1166,7 @@
           activeStage = Number(button.dataset.index);
           renderFlow();
           renderStageDetail();
+          updateOverview();
         });
       });
     }
@@ -1265,15 +1259,27 @@
         button.addEventListener("click", () => {
           const index = Number(button.dataset.index);
           tasks[index].done = !tasks[index].done;
-          updateProgress();
+          updateOverview();
           renderTasks();
         });
       });
     }
 
-    function updateProgress() {
-      const done = tasks.filter(task => task.done).length;
-      progressMetric.textContent = `${Math.round(done / tasks.length * 100)}%`;
+    function updateOverview() {
+      const todayTodos = todos.filter(item => item.date === "今日");
+      const statusCounts = todayTodos.reduce((counts, item) => {
+        counts[item.status] = (counts[item.status] || 0) + 1;
+        return counts;
+      }, {});
+      const statusText = Object.entries(statusCounts)
+        .map(([status, count]) => `${status} ${count}`)
+        .join(" · ");
+      const progress = Math.round((activeStage + 1) / stages.length * 100);
+
+      todoMetric.textContent = todayTodos.length;
+      todoMetricStatus.textContent = statusText || "今日暂无待办";
+      progressMetric.textContent = `${progress}%`;
+      progressMetricNote.textContent = `当前环节：${String(activeStage + 1).padStart(2, "0")} ${stages[activeStage].name}`;
     }
 
     function showToast(message) {
@@ -1314,6 +1320,7 @@
       activeStage = 0;
       renderFlow();
       renderStageDetail();
+      updateOverview();
     });
 
     document.querySelector("#exportBtn").addEventListener("click", () => {
@@ -1330,7 +1337,7 @@
     renderResources();
     renderTodos();
     renderTasks();
-    updateProgress();
+    updateOverview();
   </script>
 </body>
 </html>
