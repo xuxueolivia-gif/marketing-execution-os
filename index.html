@@ -323,13 +323,6 @@
       font-size: 14px;
     }
 
-    .overview-todo small {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
     .empty-state {
       padding: 18px;
       color: var(--muted);
@@ -690,22 +683,6 @@
     .todo-select:focus {
       border-color: var(--green);
       box-shadow: 0 0 0 3px rgba(47, 111, 98, .12);
-    }
-
-    .todo-title {
-      min-width: 0;
-    }
-
-    .todo-title strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .todo-title small {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      line-height: 1.5;
     }
 
     .priority {
@@ -1154,32 +1131,28 @@
       {
         id: "todo-1",
         date: getTodayDate(),
-        title: "补齐新项目 Brief 禁区",
-        desc: "确认客户必须项、禁止项、预算、上线时间。",
+        title: "补齐新项目 Brief 禁区：确认客户必须项、禁止项、预算、上线时间",
         priority: "S",
         status: "执行中"
       },
       {
         id: "todo-2",
         date: getTodayDate(),
-        title: "筛选首批达人名单",
-        desc: "按内容、人设、数据、适配度和风险做初筛。",
+        title: "筛选首批达人名单：按内容、人设、数据、适配度和风险做初筛",
         priority: "A",
         status: "待确认"
       },
       {
         id: "todo-3",
         date: getOffsetDate(1),
-        title: "整理社区调研结论",
-        desc: "沉淀情绪、热点、吐槽和可用梗。",
+        title: "整理社区调研结论：沉淀情绪、热点、吐槽和可用梗",
         priority: "B",
         status: "待启动"
       },
       {
         id: "todo-4",
         date: getOffsetDate(3),
-        title: "复盘上一轮脚本预审问题",
-        desc: "把硬广、理解偏差、客户偏好写入经验。",
+        title: "复盘上一轮脚本预审问题：把硬广、理解偏差、客户偏好写入经验",
         priority: "C",
         status: "已完成"
       }
@@ -1239,11 +1212,14 @@
         if (date === "今日") date = getTodayDate();
         if (date === "明日") date = getOffsetDate(1);
         if (date === "本周") date = getOffsetDate(3);
+        const title = item.desc && !String(item.title || "").includes(item.desc)
+          ? `${item.title || ""}：${item.desc}`
+          : item.title || "";
         return {
           id: item.id || `todo-${Date.now()}-${index}`,
           date,
-          title: item.title || "",
-          desc: item.desc || "",
+          title,
+          desc: "",
           priority: ["S", "A", "B", "C"].includes(item.priority) ? item.priority : "B",
           status: ["待启动", "执行中", "待确认", "已完成"].includes(item.status) ? item.status : "待启动"
         };
@@ -1352,7 +1328,6 @@
         <article class="overview-todo">
           <span>
             <strong>${escapeHtml(item.title || "未命名待办")}</strong>
-            <small>${escapeHtml(item.desc || "暂无补充说明")}</small>
           </span>
           <span class="priority ${priorityClass(item.priority)}">${item.priority}</span>
           <span class="badge ${statusBadgeClass(item.status)}">${item.status}</span>
@@ -1375,10 +1350,7 @@
         ${items.map(item => `
           <article class="todo-row">
             <input class="todo-input" type="date" value="${escapeHtml(item.date)}" data-id="${item.id}" data-field="date" aria-label="待办日期">
-            <span class="todo-title">
-              <input class="todo-input" type="text" value="${escapeHtml(item.title)}" data-id="${item.id}" data-field="title" aria-label="待办事项">
-              <input class="todo-input" type="text" value="${escapeHtml(item.desc)}" data-id="${item.id}" data-field="desc" aria-label="待办说明" style="margin-top:8px;">
-            </span>
+            <input class="todo-input" type="text" value="${escapeHtml(item.title)}" data-id="${item.id}" data-field="title" aria-label="待办事项">
             <select class="todo-select" data-id="${item.id}" data-field="priority" aria-label="紧急程度">
               ${["S", "A", "B", "C"].map(value => `<option value="${value}" ${item.priority === value ? "selected" : ""}>${value}</option>`).join("")}
             </select>
