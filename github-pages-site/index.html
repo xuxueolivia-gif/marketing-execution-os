@@ -264,9 +264,9 @@
       font-size: 13px;
     }
 
-    .metric-grid {
+    .overview-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, .6fr);
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -296,29 +296,106 @@
       color: var(--green);
     }
 
+    .today-list {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .overview-todo {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .overview-todo strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .empty-state {
+      padding: 18px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      font-size: 13px;
+    }
+
     .flow {
       padding: 18px;
       display: grid;
-      grid-template-columns: repeat(5, minmax(140px, 1fr));
-      gap: 12px;
+      gap: 0;
     }
 
     .stage {
-      min-height: 136px;
-      padding: 14px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: #fbfaf5;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      position: relative;
+      min-height: 112px;
+      padding: 0 0 18px 56px;
+      background: transparent;
+      display: grid;
+      grid-template-columns: minmax(120px, .28fr) minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
       text-align: left;
       color: var(--ink);
+      border: 0;
     }
 
-    .stage.active {
+    .stage::before {
+      content: "";
+      position: absolute;
+      left: 21px;
+      top: 38px;
+      bottom: -2px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .stage:last-child::before {
+      display: none;
+    }
+
+    .stage.active .stage-index {
+      background: var(--green);
+      box-shadow: 0 0 0 6px var(--green-soft);
+    }
+
+    .stage.done .stage-index {
+      background: #1f2a2e;
+    }
+
+    .stage.pending .stage-index {
+      background: #9ba39d;
+    }
+
+    .stage-main {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 14px;
+    }
+
+    .stage.active .stage-main {
       border-color: var(--green);
       background: var(--green-soft);
+    }
+
+    .stage.done .stage-main {
+      background: #f4f6f1;
+    }
+
+    .stage.pending .stage-main {
+      opacity: .72;
     }
 
     .stage-top {
@@ -326,9 +403,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      margin-bottom: 9px;
     }
 
     .stage-index {
+      position: absolute;
+      left: 8px;
+      top: 3px;
       width: 26px;
       height: 26px;
       border-radius: 7px;
@@ -340,6 +421,17 @@
       font-weight: 700;
     }
 
+    .stage-label {
+      padding-top: 5px;
+    }
+
+    .stage-label small {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
     .stage h4 {
       margin: 0;
       font-size: 15px;
@@ -347,6 +439,14 @@
 
     .stage p {
       margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .stage-action {
+      min-width: 132px;
+      padding-top: 1px;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.55;
@@ -422,7 +522,8 @@
 
     .skill-list,
     .library-list,
-    .task-list {
+    .task-list,
+    .admin-list {
       padding: 12px;
       display: grid;
       gap: 10px;
@@ -430,7 +531,8 @@
 
     .skill,
     .library,
-    .task {
+    .task,
+    .admin-card {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fbfaf5;
@@ -456,14 +558,16 @@
 
     .skill h4,
     .library h4,
-    .task h4 {
+    .task h4,
+    .admin-card h4 {
       margin: 0;
       font-size: 14px;
     }
 
     .skill p,
     .library p,
-    .task p {
+    .task p,
+    .admin-card p {
       margin: 6px 0 0;
       color: var(--muted);
       font-size: 12px;
@@ -534,6 +638,78 @@
       opacity: .62;
     }
 
+    .todo-board {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .todo-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 110px 120px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 12px;
+    }
+
+    .todo-row.header {
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .todo-input,
+    .todo-select {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 10px;
+      outline: 0;
+    }
+
+    .todo-input:focus,
+    .todo-select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(47, 111, 98, .12);
+    }
+
+    .priority {
+      width: 34px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .priority.s {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .priority.a {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+    }
+
+    .priority.b {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .priority.c {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
     .matrix {
       padding: 18px;
       display: grid;
@@ -559,34 +735,6 @@
       color: var(--muted);
       font-size: 12px;
       line-height: 1.6;
-    }
-
-    .ai-flow {
-      padding: 18px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .ai-step {
-      position: relative;
-      border-radius: 8px;
-      padding: 14px;
-      background: #fbfaf5;
-      border: 1px solid var(--line);
-      min-height: 110px;
-    }
-
-    .ai-step h4 {
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .ai-step p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
     }
 
     .toast {
@@ -616,12 +764,29 @@
         grid-template-columns: 1fr;
       }
 
-      .flow {
-        grid-template-columns: repeat(3, minmax(140px, 1fr));
+      .stage {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
       }
 
-      .matrix,
-      .ai-flow {
+      .stage-action {
+        min-width: 0;
+        padding-top: 0;
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .todo-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .todo-row.header {
+        display: none;
+      }
+
+      .matrix {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -653,10 +818,13 @@
         width: 100%;
       }
 
-      .metric-grid,
-      .flow,
+      .overview-grid,
       .matrix,
-      .ai-flow {
+      .todo-row {
+        grid-template-columns: 1fr;
+      }
+
+      .overview-todo {
         grid-template-columns: 1fr;
       }
 
@@ -694,9 +862,13 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           资源库
         </button>
-        <button data-section="ai">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-          AI 工作流
+        <button data-section="todo">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          工作待办
+        </button>
+        <button data-section="admin">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          管理员后台
         </button>
       </nav>
 
@@ -710,7 +882,7 @@
       <div class="topbar">
         <div class="title-block">
           <h2>营销执行流程系统</h2>
-          <p>把游戏营销策划的“方法、素材、经验、AI 效率”放进同一个工作台，从项目 Brief 到复盘入库，每一步都有检查项、产出物和资源入口。</p>
+          <p>按“非管理员前台 + 管理员后台”的结构管理营销执行：前台处理总览、流程、Skill、资源和待办，后台预留系统配置与数据维护。</p>
         </div>
         <div class="actions">
           <label class="search" for="globalSearch">
@@ -728,26 +900,16 @@
         </div>
       </div>
 
-      <section class="metric-grid" id="overview">
+      <section class="overview-grid" id="overview">
         <div class="metric">
-          <span>当前项目</span>
-          <strong>4</strong>
-          <small>2 个处于执行同步</small>
+          <span>今日待办事项</span>
+          <strong id="todoMetric">0</strong>
+          <small>与工作待办条目总数同步</small>
         </div>
         <div class="metric">
-          <span>流程完成度</span>
-          <strong id="progressMetric">62%</strong>
-          <small>脚本预审需跟进</small>
-        </div>
-        <div class="metric">
-          <span>资源沉淀</span>
-          <strong>8</strong>
-          <small>案例/达人/平台持续补充</small>
-        </div>
-        <div class="metric">
-          <span>风险提醒</span>
-          <strong>3</strong>
-          <small>禁区、硬广、客户偏好</small>
+          <span>当前项目整体进度</span>
+          <strong id="progressMetric">10%</strong>
+          <small id="progressMetricNote">当前环节：Brief</small>
         </div>
       </section>
 
@@ -778,17 +940,11 @@
             <div class="panel-header">
               <div>
                 <h3>今日执行清单</h3>
-                <p>围绕当前项目推进，不让卡点散在聊天里。</p>
+                <p>与今日待办事项同步，展示今天需要推进的明细。</p>
               </div>
-              <span class="badge yellow" id="taskCount">5 项</span>
+              <span class="badge yellow" id="taskCount">0 项</span>
             </div>
-            <div class="tabs" id="taskTabs">
-              <button class="tab active" data-filter="all">全部</button>
-              <button class="tab" data-filter="strategy">策略</button>
-              <button class="tab" data-filter="creator">达人</button>
-              <button class="tab" data-filter="risk">风险</button>
-            </div>
-            <div class="task-list" id="taskList"></div>
+            <div class="today-list" id="taskList"></div>
           </section>
 
           <section class="panel" id="skills">
@@ -808,7 +964,7 @@
         <div class="panel-header">
           <div>
             <h3>资源库矩阵</h3>
-            <p>项目案例、达人、创意、客户偏好、踩坑、平台、品类与提示词统一沉淀。</p>
+            <p>当前框架先接入达人资源，后续可继续扩展项目案例、创意案例、客户偏好等资源。</p>
           </div>
           <button class="small-btn" id="syncBtn">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-15-6.7L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 15 6.7L21 16"/><path d="M16 16h5v5"/></svg>
@@ -818,35 +974,41 @@
         <div class="matrix" id="resourceMatrix"></div>
       </section>
 
-      <section class="panel" id="ai" style="margin-top:18px;">
+      <section class="panel" id="todo" style="margin-top:18px;">
         <div class="panel-header">
           <div>
-            <h3>AI 增强工作流</h3>
-            <p>ChatGPT 做策略，Codex 做结构化，Typeless 做转写，Obsidian 做沉淀。</p>
+            <h3>工作待办</h3>
+            <p>按日期、事项、紧急程度和当前状态管理每日执行动作。</p>
           </div>
-          <span class="badge green">效率层</span>
+          <button class="small-btn" id="addTodoBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            新增待办
+          </button>
         </div>
-        <div class="ai-flow">
-          <div class="ai-step">
-            <span class="badge green">1</span>
-            <h4>ChatGPT 策略</h4>
-            <p>辅助需求拆解、卖点提炼、创意方向、Brief 初稿和风险预判。</p>
+        <div class="todo-board" id="todoBoard"></div>
+      </section>
+
+      <section class="panel" id="admin" style="margin-top:18px;">
+        <div class="panel-header">
+          <div>
+            <h3>管理员后台</h3>
+            <p>用于后续管理流程配置、Skill 条目、资源字段和待办状态。</p>
           </div>
-          <div class="ai-step">
-            <span class="badge green">2</span>
-            <h4>Codex 结构化</h4>
-            <p>把流程、表格、检查项和资源目录整理成可执行的系统界面。</p>
-          </div>
-          <div class="ai-step">
-            <span class="badge green">3</span>
-            <h4>Typeless 转写</h4>
-            <p>把会议、客户反馈、达人沟通内容转成可检索的文字资产。</p>
-          </div>
-          <div class="ai-step">
-            <span class="badge green">4</span>
-            <h4>Obsidian 沉淀</h4>
-            <p>将项目案例、踩坑、客户偏好和平台观察持续入库。</p>
-          </div>
+          <span class="badge green">预留</span>
+        </div>
+        <div class="admin-list">
+          <article class="admin-card">
+            <h4>流程配置</h4>
+            <p>维护 01 Brief 到 10 入库的环节名称、说明、检查项和产出物。</p>
+          </article>
+          <article class="admin-card">
+            <h4>资源字段</h4>
+            <p>维护达人资源的标签、平台、报价、适配品类、风险备注等字段。</p>
+          </article>
+          <article class="admin-card">
+            <h4>待办字典</h4>
+            <p>维护紧急程度 S/A/B/C 与状态：待启动、执行中、待确认、已完成。</p>
+          </article>
         </div>
       </section>
     </main>
@@ -860,6 +1022,7 @@
         name: "Brief",
         desc: "确认背景、任务、必须项、禁止项和交付结构。",
         status: "进行中",
+        next: "先把需求边界问清楚，再进入目标拆解。",
         checkpoints: ["项目", "游戏", "节点", "目标", "平台", "预算", "周期", "禁区"],
         outputs: ["需求卡片", "对客问题清单", "执行边界"]
       },
@@ -867,6 +1030,7 @@
         name: "拆解",
         desc: "把业务目标拆成可执行的策略动作和内容方向。",
         status: "待补充",
+        next: "输出执行路径后，再安排游戏体验和社区调研。",
         checkpoints: ["目标拆解", "平台拆解", "上线时间", "资源缺口"],
         outputs: ["执行路径", "任务分工", "排期草案"]
       },
@@ -874,6 +1038,7 @@
         name: "体验",
         desc: "找出爽点、卖点、可视化点和风险点。",
         status: "已完成",
+        next: "把体验笔记转成卖点语言，供调研和创意使用。",
         checkpoints: ["爽点", "卖点", "可视化点", "风险点"],
         outputs: ["体验笔记", "卖点库", "内容切角"]
       },
@@ -881,6 +1046,7 @@
         name: "调研",
         desc: "观察社区情绪、热点、吐槽和梗的传播土壤。",
         status: "进行中",
+        next: "提炼用户语言，进入创意发散。",
         checkpoints: ["情绪", "热点", "吐槽", "梗", "竞品"],
         outputs: ["社区观察", "用户语言", "避雷点"]
       },
@@ -888,6 +1054,7 @@
         name: "创意",
         desc: "围绕梗化、场景、冲突、角色、视觉和社交做发散。",
         status: "待评审",
+        next: "确认创意方向后，再匹配达人内容形态。",
         checkpoints: ["梗化", "场景", "冲突", "角色", "视觉", "二创"],
         outputs: ["创意方向", "内容选题", "脚本框架"]
       },
@@ -895,6 +1062,7 @@
         name: "达人",
         desc: "从内容、人设、数据、适配度和风险筛选达人。",
         status: "进行中",
+        next: "达人名单确认后，进入脚本预审和报价沟通。",
         checkpoints: ["内容", "人设", "数据", "适配", "风险"],
         outputs: ["达人名单", "报价口径", "风险标注"]
       },
@@ -902,6 +1070,7 @@
         name: "脚本",
         desc: "预审钩子、硬广感、理解准确性、风险和客户偏好。",
         status: "预警",
+        next: "脚本风险清掉后，才能进入正式执行。",
         checkpoints: ["钩子", "硬广", "理解", "风险", "客户偏好"],
         outputs: ["脚本批注", "修改建议", "确认版本"]
       },
@@ -909,6 +1078,7 @@
         name: "执行",
         desc: "同步完成项、进行中、卡点、支持需求和下一步计划。",
         status: "进行中",
+        next: "执行结束后，收集数据和反馈进入复盘。",
         checkpoints: ["完成", "进行中", "卡点", "支持", "计划"],
         outputs: ["执行日报", "问题清单", "客户同步"]
       },
@@ -916,6 +1086,7 @@
         name: "复盘",
         desc: "沉淀有效、无效、反馈、踩坑和可复制经验。",
         status: "待开始",
+        next: "复盘结论整理完成后，进入资源入库。",
         checkpoints: ["有效", "无效", "反馈", "踩坑", "经验"],
         outputs: ["复盘报告", "经验卡片", "踩坑库"]
       },
@@ -923,6 +1094,7 @@
         name: "入库",
         desc: "把项目结果归档到案例、平台、品类、提示词等资源库。",
         status: "待开始",
+        next: "沉淀为下一次项目可直接调用的资产。",
         checkpoints: ["案例", "达人", "创意", "客户", "平台", "品类"],
         outputs: ["资源标签", "可复用模板", "下次引用入口"]
       }
@@ -942,26 +1114,42 @@
     ];
 
     const resources = [
-      ["项目案例库", "沉淀已执行项目的目标、打法、结果和可复用经验。", 18],
-      ["达人资源库", "记录达人内容风格、人设、数据、报价与适配风险。", 126],
-      ["创意案例库", "收集可迁移的梗、场景、冲突、视觉和二创玩法。", 42],
-      ["客户偏好库", "沉淀客户喜欢、反感、禁区和历史反馈。", 9],
-      ["踩坑复盘库", "记录无效动作、风险场景和下次避坑方式。", 15],
-      ["平台观察库", "跟踪平台生态、热点变化、内容形式和流量机制。", 7],
-      ["游戏品类库", "按品类整理玩家动机、卖点语言和传播切角。", 11],
-      ["提示词库", "沉淀策略、拆解、脚本预审、复盘等 AI 提示词。", 24]
+      ["达人资源", "记录达人内容风格、人设、平台、数据、报价、适配度与风险备注。", 126]
     ];
 
-    const tasks = [
-      { title: "补齐新项目 Brief 禁区", meta: "需求拆解 · 今天 18:00", type: "strategy", done: false },
-      { title: "筛出 20 个高适配达人", meta: "达人筛选 · 明天 12:00", type: "creator", done: false },
-      { title: "检查脚本硬广感和客户偏好", meta: "脚本预审 · 高风险", type: "risk", done: false },
-      { title: "把社区吐槽转成创意切角", meta: "社区调研 · 进行中", type: "strategy", done: true },
-      { title: "更新报价口径与媒介确认", meta: "报价沟通 · 待同步", type: "creator", done: false }
+    const defaultTodos = [
+      {
+        id: "todo-1",
+        date: getTodayDate(),
+        title: "补齐新项目 Brief 禁区：确认客户必须项、禁止项、预算、上线时间",
+        priority: "S",
+        status: "执行中"
+      },
+      {
+        id: "todo-2",
+        date: getTodayDate(),
+        title: "筛选首批达人名单：按内容、人设、数据、适配度和风险做初筛",
+        priority: "A",
+        status: "待确认"
+      },
+      {
+        id: "todo-3",
+        date: getOffsetDate(1),
+        title: "整理社区调研结论：沉淀情绪、热点、吐槽和可用梗",
+        priority: "B",
+        status: "待启动"
+      },
+      {
+        id: "todo-4",
+        date: getOffsetDate(3),
+        title: "复盘上一轮脚本预审问题：把硬广、理解偏差、客户偏好写入经验",
+        priority: "C",
+        status: "已完成"
+      }
     ];
 
+    let todos = loadTodos();
     let activeStage = 0;
-    let taskFilter = "all";
 
     const flowEl = document.querySelector("#flow");
     const checkpointsEl = document.querySelector("#checkpoints");
@@ -969,10 +1157,63 @@
     const activeStageBadge = document.querySelector("#activeStageBadge");
     const skillList = document.querySelector("#skillList");
     const resourceMatrix = document.querySelector("#resourceMatrix");
+    const todoBoard = document.querySelector("#todoBoard");
     const taskList = document.querySelector("#taskList");
     const taskCount = document.querySelector("#taskCount");
+    const todoMetric = document.querySelector("#todoMetric");
     const progressMetric = document.querySelector("#progressMetric");
+    const progressMetricNote = document.querySelector("#progressMetricNote");
     const toast = document.querySelector("#toast");
+
+    function getTodayDate() {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getOffsetDate(offset) {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function loadTodos() {
+      try {
+        const saved = window.localStorage.getItem("gameMarketingTodos");
+        return normalizeTodos(saved ? JSON.parse(saved) : defaultTodos);
+      } catch (error) {
+        return normalizeTodos(defaultTodos);
+      }
+    }
+
+    function saveTodos() {
+      window.localStorage.setItem("gameMarketingTodos", JSON.stringify(todos));
+    }
+
+    function normalizeTodos(items) {
+      return items.map((item, index) => {
+        let date = item.date || getTodayDate();
+        if (date === "今日") date = getTodayDate();
+        if (date === "明日") date = getOffsetDate(1);
+        if (date === "本周") date = getOffsetDate(3);
+        const title = item.desc && !String(item.title || "").includes(item.desc)
+          ? `${item.title || ""}：${item.desc}`
+          : item.title || "";
+        return {
+          id: item.id || `todo-${Date.now()}-${index}`,
+          date,
+          title,
+          desc: "",
+          priority: ["S", "A", "B", "C"].includes(item.priority) ? item.priority : "B",
+          status: ["待启动", "执行中", "待确认", "已完成"].includes(item.status) ? item.status : "待启动"
+        };
+      });
+    }
 
     function statusClass(status) {
       if (status === "预警") return "red";
@@ -982,13 +1223,20 @@
 
     function renderFlow() {
       flowEl.innerHTML = stages.map((stage, index) => `
-        <button class="stage ${index === activeStage ? "active" : ""}" data-index="${index}">
-          <span class="stage-top">
-            <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
-            <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+        <button class="stage ${index < activeStage ? "done" : index === activeStage ? "active" : "pending"}" data-index="${index}">
+          <span class="stage-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="stage-label">
+            <small>${index < activeStage ? "已走过" : index === activeStage ? "当前环节" : "后续环节"}</small>
+            <h4>${stage.name}</h4>
           </span>
-          <h4>${stage.name}</h4>
-          <p>${stage.desc}</p>
+          <span class="stage-main">
+            <span class="stage-top">
+              <strong>${stage.name}</strong>
+              <span class="badge ${statusClass(stage.status)}">${stage.status}</span>
+            </span>
+            <p>${stage.desc}</p>
+          </span>
+          <span class="stage-action">${stage.next}</span>
         </button>
       `).join("");
 
@@ -997,6 +1245,7 @@
           activeStage = Number(button.dataset.index);
           renderFlow();
           renderStageDetail();
+          updateOverview();
         });
       });
     }
@@ -1033,38 +1282,91 @@
       `).join("");
     }
 
-    function renderTasks() {
-      const visible = taskFilter === "all" ? tasks : tasks.filter(task => task.type === taskFilter);
-      taskCount.textContent = `${visible.length} 项`;
-      taskList.innerHTML = visible.map(task => {
-        const originalIndex = tasks.indexOf(task);
-        return `
-          <article class="task ${task.done ? "done" : ""}">
-            <button class="check" aria-label="切换完成状态" data-index="${originalIndex}">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
-            </button>
-            <div>
-              <h4>${task.title}</h4>
-              <p>${task.meta}</p>
-            </div>
-            <span class="badge ${task.type === "risk" ? "red" : "green"}">${task.type === "risk" ? "风险" : task.type === "creator" ? "达人" : "策略"}</span>
-          </article>
-        `;
-      }).join("");
+    function priorityClass(priority) {
+      return priority.toLowerCase();
+    }
 
-      taskList.querySelectorAll(".check").forEach(button => {
-        button.addEventListener("click", () => {
-          const index = Number(button.dataset.index);
-          tasks[index].done = !tasks[index].done;
-          updateProgress();
-          renderTasks();
+    function statusBadgeClass(status) {
+      if (status === "执行中") return "green";
+      if (status === "待确认") return "yellow";
+      if (status === "已完成") return "green";
+      return "";
+    }
+
+    function isToday(dateValue) {
+      return dateValue === getTodayDate();
+    }
+
+    function formatDate(dateValue) {
+      if (isToday(dateValue)) return "今日";
+      return dateValue;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderTodayLists() {
+      const todayTodos = todos.filter(item => isToday(item.date));
+      const listHtml = todayTodos.length ? todayTodos.map(item => `
+        <article class="overview-todo">
+          <span>
+            <strong>${escapeHtml(item.title || "未命名待办")}</strong>
+          </span>
+          <span class="priority ${priorityClass(item.priority)}">${item.priority}</span>
+          <span class="badge ${statusBadgeClass(item.status)}">${item.status}</span>
+        </article>
+      `).join("") : `<div class="empty-state">今日暂无待办事项，可以在“工作待办”里新增。</div>`;
+
+      taskList.innerHTML = listHtml;
+      taskCount.textContent = `${todayTodos.length} 项`;
+    }
+
+    function renderTodos(items = todos) {
+      todoBoard.innerHTML = `
+        <div class="todo-row header">
+          <span>日期</span>
+          <span>待办事项</span>
+          <span>紧急程度</span>
+          <span>当前状态</span>
+        </div>
+        ${items.map(item => `
+          <article class="todo-row">
+            <input class="todo-input" type="date" value="${escapeHtml(item.date)}" data-id="${item.id}" data-field="date" aria-label="待办日期">
+            <input class="todo-input" type="text" value="${escapeHtml(item.title)}" data-id="${item.id}" data-field="title" aria-label="待办事项">
+            <select class="todo-select" data-id="${item.id}" data-field="priority" aria-label="紧急程度">
+              ${["S", "A", "B", "C"].map(value => `<option value="${value}" ${item.priority === value ? "selected" : ""}>${value}</option>`).join("")}
+            </select>
+            <select class="todo-select" data-id="${item.id}" data-field="status" aria-label="当前状态">
+              ${["待启动", "执行中", "待确认", "已完成"].map(value => `<option value="${value}" ${item.status === value ? "selected" : ""}>${value}</option>`).join("")}
+            </select>
+          </article>
+        `).join("")}
+      `;
+
+      todoBoard.querySelectorAll("[data-field]").forEach(control => {
+        control.addEventListener("input", () => {
+          const todo = todos.find(item => item.id === control.dataset.id);
+          if (!todo) return;
+          todo[control.dataset.field] = control.value;
+          saveTodos();
+          updateOverview();
+          renderTodayLists();
         });
       });
     }
 
-    function updateProgress() {
-      const done = tasks.filter(task => task.done).length;
-      progressMetric.textContent = `${Math.round(done / tasks.length * 100)}%`;
+    function updateOverview() {
+      const progress = Math.round((activeStage + 1) / stages.length * 100);
+
+      todoMetric.textContent = todos.length;
+      progressMetric.textContent = `${progress}%`;
+      progressMetricNote.textContent = `当前环节：${String(activeStage + 1).padStart(2, "0")} ${stages[activeStage].name}`;
     }
 
     function showToast(message) {
@@ -1081,21 +1383,30 @@
       });
     });
 
-    document.querySelectorAll(".tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
-        tab.classList.add("active");
-        taskFilter = tab.dataset.filter;
-        renderTasks();
-      });
-    });
-
     document.querySelector("#globalSearch").addEventListener("input", event => {
       const keyword = event.target.value.trim().toLowerCase();
       const matchedSkills = keyword ? skills.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : skills;
       const matchedResources = keyword ? resources.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : resources;
+      const matchedTodos = keyword ? todos.filter(item => `${item.date} ${formatDate(item.date)} ${item.title} ${item.desc} ${item.priority} ${item.status}`.toLowerCase().includes(keyword)) : todos;
       renderSkills(matchedSkills);
       renderResources(matchedResources);
+      renderTodos(matchedTodos);
+    });
+
+    document.querySelector("#addTodoBtn").addEventListener("click", () => {
+      todos.unshift({
+        id: `todo-${Date.now()}`,
+        date: getTodayDate(),
+        title: "新待办事项",
+        desc: "",
+        priority: "B",
+        status: "待启动"
+      });
+      saveTodos();
+      renderTodos();
+      updateOverview();
+      renderTodayLists();
+      showToast("已新增待办事项，可直接编辑");
     });
 
     document.querySelector("#newProjectBtn").addEventListener("click", () => {
@@ -1103,22 +1414,24 @@
       activeStage = 0;
       renderFlow();
       renderStageDetail();
+      updateOverview();
     });
 
     document.querySelector("#exportBtn").addEventListener("click", () => {
-      showToast("执行清单已整理：Brief、达人、脚本风险优先处理");
+      showToast("今日待办事项已整理，可在工作待办中继续编辑");
     });
 
     document.querySelector("#syncBtn").addEventListener("click", () => {
-      showToast("资源库结构已对齐 Obsidian：案例、达人、创意、复盘");
+      showToast("资源库结构已对齐：当前接入达人资源");
     });
 
     renderFlow();
     renderStageDetail();
     renderSkills();
     renderResources();
-    renderTasks();
-    updateProgress();
+    renderTodos();
+    updateOverview();
+    renderTodayLists();
   </script>
 </body>
 </html>
