@@ -491,7 +491,8 @@
 
     .skill-list,
     .library-list,
-    .task-list {
+    .task-list,
+    .admin-list {
       padding: 12px;
       display: grid;
       gap: 10px;
@@ -499,7 +500,8 @@
 
     .skill,
     .library,
-    .task {
+    .task,
+    .admin-card {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fbfaf5;
@@ -525,14 +527,16 @@
 
     .skill h4,
     .library h4,
-    .task h4 {
+    .task h4,
+    .admin-card h4 {
       margin: 0;
       font-size: 14px;
     }
 
     .skill p,
     .library p,
-    .task p {
+    .task p,
+    .admin-card p {
       margin: 6px 0 0;
       color: var(--muted);
       font-size: 12px;
@@ -603,6 +607,76 @@
       opacity: .62;
     }
 
+    .todo-board {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .todo-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr) 110px 120px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfaf5;
+      padding: 12px;
+    }
+
+    .todo-row.header {
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .todo-title {
+      min-width: 0;
+    }
+
+    .todo-title strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .todo-title small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .priority {
+      width: 34px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .priority.s {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .priority.a {
+      background: var(--yellow-soft);
+      color: var(--yellow);
+    }
+
+    .priority.b {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .priority.c {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
     .matrix {
       padding: 18px;
       display: grid;
@@ -667,6 +741,14 @@
         padding-top: 0;
       }
 
+      .todo-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .todo-row.header {
+        display: none;
+      }
+
       .matrix {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -700,7 +782,8 @@
       }
 
       .metric-grid,
-      .matrix {
+      .matrix,
+      .todo-row {
         grid-template-columns: 1fr;
       }
 
@@ -738,6 +821,14 @@
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           资源库
         </button>
+        <button data-section="todo">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          工作待办
+        </button>
+        <button data-section="admin">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          管理员后台
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -750,7 +841,7 @@
       <div class="topbar">
         <div class="title-block">
           <h2>营销执行流程系统</h2>
-          <p>把游戏营销策划的“执行流程、Skill 方法、资源沉淀”放进同一个工作台，从项目 Brief 到复盘入库，每一步都有检查项、产出物和资源入口。</p>
+          <p>按“非管理员前台 + 管理员后台”的结构管理营销执行：前台处理总览、流程、Skill、资源和待办，后台预留系统配置与数据维护。</p>
         </div>
         <div class="actions">
           <label class="search" for="globalSearch">
@@ -781,8 +872,8 @@
         </div>
         <div class="metric">
           <span>资源沉淀</span>
-          <strong>8</strong>
-          <small>案例/达人/平台持续补充</small>
+          <strong>1</strong>
+          <small>当前接入达人资源</small>
         </div>
         <div class="metric">
           <span>风险提醒</span>
@@ -848,7 +939,7 @@
         <div class="panel-header">
           <div>
             <h3>资源库矩阵</h3>
-            <p>项目案例、达人、创意、客户偏好、踩坑、平台、品类与提示词统一沉淀。</p>
+            <p>当前框架先接入达人资源，后续可继续扩展项目案例、创意案例、客户偏好等资源。</p>
           </div>
           <button class="small-btn" id="syncBtn">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-15-6.7L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 15 6.7L21 16"/><path d="M16 16h5v5"/></svg>
@@ -856,6 +947,41 @@
           </button>
         </div>
         <div class="matrix" id="resourceMatrix"></div>
+      </section>
+
+      <section class="panel" id="todo" style="margin-top:18px;">
+        <div class="panel-header">
+          <div>
+            <h3>工作待办</h3>
+            <p>按日期、事项、紧急程度和当前状态管理每日执行动作。</p>
+          </div>
+          <span class="badge yellow">S/A/B/C</span>
+        </div>
+        <div class="todo-board" id="todoBoard"></div>
+      </section>
+
+      <section class="panel" id="admin" style="margin-top:18px;">
+        <div class="panel-header">
+          <div>
+            <h3>管理员后台</h3>
+            <p>用于后续管理流程配置、Skill 条目、资源字段和待办状态。</p>
+          </div>
+          <span class="badge green">预留</span>
+        </div>
+        <div class="admin-list">
+          <article class="admin-card">
+            <h4>流程配置</h4>
+            <p>维护 01 Brief 到 10 入库的环节名称、说明、检查项和产出物。</p>
+          </article>
+          <article class="admin-card">
+            <h4>资源字段</h4>
+            <p>维护达人资源的标签、平台、报价、适配品类、风险备注等字段。</p>
+          </article>
+          <article class="admin-card">
+            <h4>待办字典</h4>
+            <p>维护紧急程度 S/A/B/C 与状态：待启动、执行中、待确认、已完成。</p>
+          </article>
+        </div>
       </section>
     </main>
   </div>
@@ -960,14 +1086,7 @@
     ];
 
     const resources = [
-      ["项目案例库", "沉淀已执行项目的目标、打法、结果和可复用经验。", 18],
-      ["达人资源库", "记录达人内容风格、人设、数据、报价与适配风险。", 126],
-      ["创意案例库", "收集可迁移的梗、场景、冲突、视觉和二创玩法。", 42],
-      ["客户偏好库", "沉淀客户喜欢、反感、禁区和历史反馈。", 9],
-      ["踩坑复盘库", "记录无效动作、风险场景和下次避坑方式。", 15],
-      ["平台观察库", "跟踪平台生态、热点变化、内容形式和流量机制。", 7],
-      ["游戏品类库", "按品类整理玩家动机、卖点语言和传播切角。", 11],
-      ["提示词库", "沉淀策略、拆解、脚本预审、复盘等 AI 提示词。", 24]
+      ["达人资源", "记录达人内容风格、人设、平台、数据、报价、适配度与风险备注。", 126]
     ];
 
     const tasks = [
@@ -976,6 +1095,37 @@
       { title: "检查脚本硬广感和客户偏好", meta: "脚本预审 · 高风险", type: "risk", done: false },
       { title: "把社区吐槽转成创意切角", meta: "社区调研 · 进行中", type: "strategy", done: true },
       { title: "更新报价口径与媒介确认", meta: "报价沟通 · 待同步", type: "creator", done: false }
+    ];
+
+    const todos = [
+      {
+        date: "今日",
+        title: "补齐新项目 Brief 禁区",
+        desc: "确认客户必须项、禁止项、预算、上线时间。",
+        priority: "S",
+        status: "执行中"
+      },
+      {
+        date: "今日",
+        title: "筛选首批达人名单",
+        desc: "按内容、人设、数据、适配度和风险做初筛。",
+        priority: "A",
+        status: "待确认"
+      },
+      {
+        date: "明日",
+        title: "整理社区调研结论",
+        desc: "沉淀情绪、热点、吐槽和可用梗。",
+        priority: "B",
+        status: "待启动"
+      },
+      {
+        date: "本周",
+        title: "复盘上一轮脚本预审问题",
+        desc: "把硬广、理解偏差、客户偏好写入经验。",
+        priority: "C",
+        status: "已完成"
+      }
     ];
 
     let activeStage = 0;
@@ -987,6 +1137,7 @@
     const activeStageBadge = document.querySelector("#activeStageBadge");
     const skillList = document.querySelector("#skillList");
     const resourceMatrix = document.querySelector("#resourceMatrix");
+    const todoBoard = document.querySelector("#todoBoard");
     const taskList = document.querySelector("#taskList");
     const taskCount = document.querySelector("#taskCount");
     const progressMetric = document.querySelector("#progressMetric");
@@ -1058,6 +1209,39 @@
       `).join("");
     }
 
+    function priorityClass(priority) {
+      return priority.toLowerCase();
+    }
+
+    function statusBadgeClass(status) {
+      if (status === "执行中") return "green";
+      if (status === "待确认") return "yellow";
+      if (status === "已完成") return "green";
+      return "";
+    }
+
+    function renderTodos(items = todos) {
+      todoBoard.innerHTML = `
+        <div class="todo-row header">
+          <span>日期</span>
+          <span>待办事项</span>
+          <span>紧急程度</span>
+          <span>当前状态</span>
+        </div>
+        ${items.map(item => `
+          <article class="todo-row">
+            <span>${item.date}</span>
+            <span class="todo-title">
+              <strong>${item.title}</strong>
+              <small>${item.desc}</small>
+            </span>
+            <span class="priority ${priorityClass(item.priority)}">${item.priority}</span>
+            <span class="badge ${statusBadgeClass(item.status)}">${item.status}</span>
+          </article>
+        `).join("")}
+      `;
+    }
+
     function renderTasks() {
       const visible = taskFilter === "all" ? tasks : tasks.filter(task => task.type === taskFilter);
       taskCount.textContent = `${visible.length} 项`;
@@ -1119,8 +1303,10 @@
       const keyword = event.target.value.trim().toLowerCase();
       const matchedSkills = keyword ? skills.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : skills;
       const matchedResources = keyword ? resources.filter(([title, desc]) => `${title} ${desc}`.toLowerCase().includes(keyword)) : resources;
+      const matchedTodos = keyword ? todos.filter(item => `${item.date} ${item.title} ${item.desc} ${item.priority} ${item.status}`.toLowerCase().includes(keyword)) : todos;
       renderSkills(matchedSkills);
       renderResources(matchedResources);
+      renderTodos(matchedTodos);
     });
 
     document.querySelector("#newProjectBtn").addEventListener("click", () => {
@@ -1135,13 +1321,14 @@
     });
 
     document.querySelector("#syncBtn").addEventListener("click", () => {
-      showToast("资源库结构已对齐 Obsidian：案例、达人、创意、复盘");
+      showToast("资源库结构已对齐：当前接入达人资源");
     });
 
     renderFlow();
     renderStageDetail();
     renderSkills();
     renderResources();
+    renderTodos();
     renderTasks();
     updateProgress();
   </script>
